@@ -15,9 +15,14 @@
 			"printWidth": 100,
 			"trailingComma": "none",
 			"endOfLine": "auto"
-		}
+		},
+		"lint": "yarn run eslint"
 	},
 	"dependencies": {
+		"babel-eslint": "^10.1.0",
+		"eslint": "^8.52.0",
+		"eslint-plugin-react": "^7.33.2",
+		"eslint-plugin-react-native": "^4.1.0",
 		"expo": "~49.0.15",
 		"expo-status-bar": "~1.6.0",
 		"react": "18.2.0",
