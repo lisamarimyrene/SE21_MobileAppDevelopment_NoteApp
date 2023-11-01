@@ -3,8 +3,14 @@ import { Index } from './src/pages/Index';
 
 export default function App() {
   return (
-    <View>
+    <View style={app.app}>
       <Index />
     </View>
   );
 }
+
+const app = StyleSheet.create({
+  app: {
+    flex: 1
+  }
+})
