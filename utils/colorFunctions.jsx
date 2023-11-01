@@ -6,12 +6,7 @@ export const setColors = {
     pink: colors.pink.light,
     blue: colors.blue.light,
     green: colors.green.light
-};
-
-// Function to find the custom className based on color
-// export const findColor = () => {
-//     return setColors[color] || color;
-// }
+}
 
 // Set stroke colors to edit button svg
 export const strokeColors = {
@@ -19,4 +14,6 @@ export const strokeColors = {
     pink: '#B17A9B',
     blue: '#7AA7B1',
     green: '#8CB17A'
-};
+}
+
+
