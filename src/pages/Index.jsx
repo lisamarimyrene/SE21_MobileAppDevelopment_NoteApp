@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native'
 import { PostIt } from '../components/PostIt'
 import { NewNote } from '../components/NewNote';
 import { colors } from '../../themes/colors'
@@ -10,8 +10,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const Index = () => {
     const [showNewNote, setShowNewNote] = useState(false);
     const [notes, setNotes] = useState([]);
+    const [editNote, setEditNote] = useState(null);
 
-    // Load notes
+    // Load all saved notes 
     useEffect(() => {
         // Load notes from AsyncStorage
         AsyncStorage.getItem('notes')
@@ -21,41 +22,82 @@ export const Index = () => {
                     setNotes(parsedNotes);
                 }
             })
+            // Error message in case it's not able to load notes
             .catch(error => {
                 console.error('Error loading notes from AsyncStorage: ', error);
             });
     }, []);
 
-    // Function to generate the next id
+    // Function to generate the an unique id for the postit notes
     const getNewId = () => {
-        const newId = Date.now(); // Use a timestamp as a unique ID
+        const newId = Date.now();
         return newId.toString();
     };
 
-    // Save new note
-    const handleSaveNote = newNote => {
-        const newId = getNewId(); // Assign a unique ID to the note
-        newNote.id = newId;
-    
-        // Update the notes array
-        const updatedNotes = [...notes, newNote];
-    
+    // Save note created or edited
+    const handleSaveNote = (newNote) => {
+        let updatedNotes;
+
+        if (editNote) {
+            // If you are editing a note, update it in the existing notes
+            updatedNotes = notes.map((note) =>
+                note.id === editNote.id ? { ...note, ...newNote } : note
+            );
+        } else {
+            // If you are adding a new note, add it to the existing notes
+            newNote.id = getNewId();
+            updatedNotes = [...notes, newNote];
+        }
+
+        // Update the state with the updated notes
+        setNotes(updatedNotes);
+
         // Store the updated notes in AsyncStorage
         AsyncStorage.setItem('notes', JSON.stringify(updatedNotes))
             .then(() => {
-                // Update the state with the new notes
-                setNotes(updatedNotes);
                 setShowNewNote(false);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Error saving notes to AsyncStorage: ', error);
             });
-    }
+    };
 
+    // ! Clean up code
+    // If user cancels the new note (not saving)
+    const handleCancel = (isDelete, tempId) => {
+        if (isDelete) {
+            if (tempId) {
+                // Remove the temporary note by its unique ID
+                setNotes((prevNotes) => prevNotes.filter((note) => note.id !== tempId));
+            } else if (editNote) {
+                // Remove the note from your data or state
+                setNotes((prevNotes) => prevNotes.filter((note) => note.id !== editNote.id));
+            }
 
-    // Do not save new note
-    const handleCancel = () => {
-        setShowNewNote(false);
+            // Update AsyncStorage to remove the deleted note
+            AsyncStorage.setItem(
+                'notes',
+                JSON.stringify(notes.filter((note) => (tempId ? note.id !== tempId : note.id !== editNote.id)))
+            )
+                .then(() => {
+                    // Dismiss the editing view
+                    setShowNewNote(false);
+                    setEditNote(null);
+                })
+                .catch((error) => {
+                    console.error('Error saving notes to AsyncStorage: ', error);
+                });
+        } else {
+            // Dismiss the editing view
+            setShowNewNote(false);
+            setEditNote(null);
+        }
+    };
+
+    // Handle the edit of an exisiting note
+    const handleEditNote = (note) => {
+        setEditNote(note);
+        setShowNewNote(true);
     };
 
     return (
@@ -64,19 +106,26 @@ export const Index = () => {
                 showsVerticalScrollIndicator={false}
                 showsHorizontalScrollIndicator={false}
             >
-                <View style={styles.postitSection}>
-                    {notes.map((note) => (
-                        <PostIt
-                            key={note.id}
-                            color={note.color}
-                            title={note.title}
-                            content={note.content}
-                        />
-                    ))}
-                </View>
+                {!notes.length ? (
+                    <View style={styles.placeholderTxtContainer}>
+                        <Text style={styles.placeholderTxt}>Click the + button to create new note</Text>
+                    </View>
+                ) : (
+                    <View style={styles.postitSection}>
+                        {notes.map((note) => (
+                            <PostIt
+                                key={note.id}
+                                color={note.color}
+                                title={note.title}
+                                content={note.content}
+                                onEdit={() => handleEditNote(note)}
+                            />
+                        ))}
+                    </View>
+                )}
             </ScrollView>
             {showNewNote ? (
-                <NewNote onSave={handleSaveNote} onCancel={handleCancel} noteId={getNewId} />
+                <NewNote onSave={handleSaveNote} onCancel={handleCancel} noteId={getNewId} editNote={editNote} />
             ) : (
                 <TouchableOpacity
                     style={styles.buttonContainer}
@@ -105,6 +154,14 @@ const styles = StyleSheet.create({
     scrollContainer: {
         flex: 0.7,
     },
+    placeholderTxtContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    placeholderTxt: {
+        color: colors.text,
+        fontFamily: 'Menlo'
+    },
     postitSection: {
         flexDirection: 'row',
         flexWrap: 'wrap', // Allow the PostIt components to wrap
@@ -112,7 +169,7 @@ const styles = StyleSheet.create({
         padding: 5
     },
     buttonContainer: {
-        flex: 0.3, // Set to 20% of the available height
+        flex: 0.3, // Set to 30% of the available height
         justifyContent: 'center',
         alignItems: 'center',
     },

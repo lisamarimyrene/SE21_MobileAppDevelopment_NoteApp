@@ -1,9 +1,8 @@
 
 import { TextInput, View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
-import { colors } from '../../themes/colors'
+// import { colors } from '../../themes/colors'
 import Svg, { Path, Mask, Rect } from 'react-native-svg';
 import React, { useState } from 'react';
-import noSetState from 'eslint-plugin-react/lib/rules/no-set-state';
 
 export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
     // Set states, and populate fields if note exists.
