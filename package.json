@@ -19,6 +19,7 @@
 		"lint": "yarn run eslint"
 	},
 	"dependencies": {
+		"@react-native-async-storage/async-storage": "^1.19.4",
 		"babel-eslint": "^10.1.0",
 		"eslint": "^8.52.0",
 		"eslint-plugin-react": "^7.33.2",
@@ -26,9 +27,12 @@
 		"expo": "~49.0.15",
 		"expo-status-bar": "~1.6.0",
 		"react": "18.2.0",
+		"react-dom": "^18.2.0",
 		"react-native": "0.72.6",
+		"react-native-storage": "^1.0.1",
 		"react-native-svg": "^13.14.0",
-		"react-native-svg-transformer": "^1.1.0"
+		"react-native-svg-transformer": "^1.1.0",
+		"react-native-web": "^0.19.9"
 	},
 	"resolutions": {
 		"@expo/cli": "xxx"
