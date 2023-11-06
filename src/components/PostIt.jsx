@@ -17,7 +17,7 @@ export const PostIt = ({ color, title, content, onEdit }) => {
         <View style={[styles.postitContainer, { backgroundColor }]}>
             <View style={styles.textContainer}>
                 <Text style={styles.headlineTxt}>{title}</Text>
-                <Text style={styles.contentTxt} numberOfLines={3}>{content}</Text>
+                <Text style={styles.contentTxt} numberOfLines={5}>{content}</Text>
             </View>
             <TouchableOpacity style={styles.editSvg} onPress={onEdit}>
                 <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

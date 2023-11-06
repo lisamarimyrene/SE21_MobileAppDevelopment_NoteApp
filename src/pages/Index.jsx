@@ -73,24 +73,28 @@ export const Index = () => {
                 // Remove the note from your data or state
                 setNotes((prevNotes) => prevNotes.filter((note) => note.id !== editNote.id));
             }
-
-            // Update AsyncStorage to remove the deleted note
-            AsyncStorage.setItem(
-                'notes',
-                JSON.stringify(notes.filter((note) => (tempId ? note.id !== tempId : note.id !== editNote.id)))
-            )
-                .then(() => {
-                    // Dismiss the editing view
-                    setShowNewNote(false);
-                    setEditNote(null);
-                })
-                .catch((error) => {
-                    console.error('Error saving notes to AsyncStorage: ', error);
-                });
+    
+            if (editNote) {
+                // Update AsyncStorage to remove the deleted note
+                AsyncStorage.setItem(
+                    'notes',
+                    JSON.stringify(notes.filter((note) => (tempId ? note.id !== tempId : note.id !== editNote.id)))
+                )
+                    .then(() => {
+                        // Dismiss the editing view
+                        setShowNewNote(false);
+                        setEditNote(null);
+                    })
+                    .catch((error) => {
+                        console.error('Error saving notes to AsyncStorage: ', error);
+                    });
+            } else {
+                // If there is no `editNote`, simply dismiss the editing view
+                setShowNewNote(false);
+            }
         } else {
             // Dismiss the editing view
             setShowNewNote(false);
-            setEditNote(null);
         }
     };
 
