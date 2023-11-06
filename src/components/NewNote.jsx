@@ -1,7 +1,7 @@
 
 import { TextInput, View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
-// import { colors } from '../../themes/colors'
-import Svg, { Path, Mask, Rect } from 'react-native-svg';
+import { colorOptions } from '../../utils/colorFunctions';
+import Svg, { Path, Rect } from 'react-native-svg';
 import React, { useState } from 'react';
 
 export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
@@ -14,34 +14,6 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
     const handleColorChange = (color) => {
         setColor(color);
     };
-
-    // Define a map of colors and their corresponding fill values
-    const colorOptions = [
-        {
-            name: 'yellow',
-            fill: '#FEFFD8',
-            activeFill: '#E7E59C',
-            stroke: '#E7E59C',
-        },
-        {
-            name: 'green',
-            fill: '#CCE9BE',
-            activeFill: '#B6D9AA',
-            stroke: '#B6D9AA',
-        },
-        {
-            name: 'pink',
-            fill: '#F0D2E2',
-            activeFill: '#EACADB',
-            stroke: '#EACADB',
-        },
-        {
-            name: 'blue',
-            fill: '#B9E1E9',
-            activeFill: '#ABD5DE',
-            stroke: '#ABD5DE',
-        },
-    ];
 
     // Handle the saving functionality
     const handleSave = () => {
@@ -135,7 +107,6 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                 {colorOptions.map((colorOption) => (
                     <TouchableOpacity
                         key={colorOption.name}
-                        style={styles.colorButton}
                         onPress={() => handleColorChange(colorOption.name)}
                     >
                         <Svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -189,11 +160,9 @@ const styles = StyleSheet.create({
     },
     chooseColorSection: {
         flexDirection: 'row',
-        width: '60%',
-        justifyContent: 'space-between',
+        width: '100%',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
         paddingVertical: 20
-    },
-    // colorButtons: {
-
-    // }
+    }
 })
