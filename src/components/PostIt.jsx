@@ -17,7 +17,7 @@ export const PostIt = ({ color, title, content, onEdit }) => {
         <View style={[styles.postitContainer, { backgroundColor }]}>
             <View style={styles.textContainer}>
                 <Text style={styles.headlineTxt}>{title}</Text>
-                <Text style={styles.contentTxt} numberOfLines={5}>{content}</Text>
+                <Text style={styles.contentTxt} numberOfLines={3}>{content}</Text>
             </View>
             <TouchableOpacity style={styles.editSvg} onPress={onEdit}>
                 <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -41,11 +41,14 @@ const styles = StyleSheet.create({
         color: colors.text,
         backgroundColor: 'white',
         borderRadius: 4,
-        shadowColor: '#B8AFB8',
-        shadowOffset: { width: -2, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-        overflow: 'hidden',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.00,
+        elevation: 4,
     },
     textContainer: {
         height: '50%'

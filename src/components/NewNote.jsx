@@ -102,25 +102,30 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                     onChangeText={text => setContent(text)}
                 />
             </View>
+            <View style={styles.optionsContainer}>
+                <View style={styles.cameraSection}>
 
-            <View style={styles.chooseColorSection}>
-                {colorOptions.map((colorOption) => (
-                    <TouchableOpacity
-                        key={colorOption.name}
-                        onPress={() => handleColorChange(colorOption.name)}
-                    >
-                        <Svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <Rect
-                                width="41"
-                                height="41"
-                                rx="3"
-                                fill={color === colorOption.name ? colorOption.activeFill : colorOption.fill}
-                                stroke={colorOption.stroke}
-                                strokeWidth="7"
-                            />
-                        </Svg>
-                    </TouchableOpacity>
-                ))}
+                </View>
+
+                <View style={styles.chooseColorSection}>
+                    {colorOptions.map((colorOption) => (
+                        <TouchableOpacity
+                            key={colorOption.name}
+                            onPress={() => handleColorChange(colorOption.name)}
+                        >
+                            <Svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <Rect
+                                    width="41"
+                                    height="41"
+                                    rx="3"
+                                    fill={color === colorOption.name ? colorOption.activeFill : colorOption.fill}
+                                    stroke={colorOption.stroke}
+                                    strokeWidth="7"
+                                />
+                            </Svg>
+                        </TouchableOpacity>
+                    ))}
+                </View>
             </View>
         </View>
     )
@@ -158,10 +163,14 @@ const styles = StyleSheet.create({
         height: '80%',
         fontFamily: 'Menlo'
     },
+    optionsContainer: {
+        width: '100%',
+        justifyContent: 'space-between'
+    },
     chooseColorSection: {
         flexDirection: 'row',
-        width: '100%',
-        justifyContent: 'space-evenly',
+        width: '65%',
+        justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 20
     }

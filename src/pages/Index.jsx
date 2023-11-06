@@ -43,6 +43,8 @@ export const Index = () => {
             updatedNotes = notes.map((note) =>
                 note.id === editNote.id ? { ...note, ...newNote } : note
             );
+            // Reset input fields to null
+            setEditNote(null);
         } else {
             // If you are adding a new note, add it to the existing notes
             newNote.id = getNewId();
