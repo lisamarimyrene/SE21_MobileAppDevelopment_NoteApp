@@ -1,18 +1,78 @@
 
-import { TextInput, View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { TextInput, Text, View, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native'
 import { colorOptions } from '../../utils/colorFunctions';
 import Svg, { Path, Rect } from 'react-native-svg';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from 'expo-media-library';
+
+
+
 
 export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
     // Set states, and populate fields if note exists.
     const [title, setTitle] = useState(editNote ? editNote.title : '');
     const [content, setContent] = useState(editNote ? editNote.content : '');
     const [color, setColor] = useState(editNote ? editNote.color : 'yellow');
+    const [imageUri, setImageUri] = useState(null); // Store the image URI
 
     // Handle color change of the post-it note
     const handleColorChange = (color) => {
         setColor(color);
+    };
+
+    // Ger media library permission
+    const getCameraRollPermission = async () => {
+        const { status } = await MediaLibrary.requestPermissionsAsync();
+        if (status !== 'granted') {
+            alert('Permission to access camera roll is required!');
+        }
+    };
+    
+    // Get camera permission
+    const getCameraPermission = async () => {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if (status !== 'granted') {
+            alert('Permission to access the camera is required!');
+        }
+    };
+
+    // Update persmission
+    useEffect(() => {
+        getCameraRollPermission();
+        getCameraPermission();
+    }, []);
+
+    // Take photo functionality
+    const takePhoto = async () => {
+        const result = await ImagePicker.launchCameraAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+    
+        if (!result.cancelled) {
+            // Set the image URI to display the captured photo
+            const uri = result.assets[0].uri;
+            setImageUri(uri);
+        }
+    };
+    
+    // Choose picture from cameraroll functionality
+    const chooseFromCameraRoll = async () => {
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+    
+        if (!result.cancelled) {
+            // Set the image URI to display the selected image
+            const uri = result.assets[0].uri;
+            setImageUri(uri);
+        }
     };
 
     // Handle the saving functionality
@@ -23,6 +83,7 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                 color: color,
                 title: title,
                 content: content,
+                image: imageUri,
             };
             onSave(newNote);
             onCancel();
@@ -71,6 +132,7 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
         }
     };
 
+
     return (
         <View style={styles.newNoteContainer}>
             <View style={styles.saveSection}>
@@ -103,10 +165,6 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                 />
             </View>
             <View style={styles.optionsContainer}>
-                <View style={styles.cameraSection}>
-
-                </View>
-
                 <View style={styles.chooseColorSection}>
                     {colorOptions.map((colorOption) => (
                         <TouchableOpacity
@@ -126,6 +184,27 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                         </TouchableOpacity>
                     ))}
                 </View>
+                <TouchableOpacity onPress={takePhoto} style={styles.takePhotoBtn}>
+                    <Svg width="40" height="40" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <Path d="M43.75 6.25H36.25L33.125 3.125H16.875L13.75 6.25H6.25C3.83172 6.25 1.875 8.20672 1.875 10.625V37.5C1.875 39.9183 3.83172 41.875 6.25 41.875H43.75C46.1683 41.875 48.125 39.9183 48.125 37.5V10.625C48.125 8.20672 46.1683 6.25 43.75 6.25ZM25 36.25C18.8813 36.25 13.75 31.1187 13.75 25C13.75 18.8813 18.8813 13.75 25 13.75C31.1187 13.75 36.25 18.8813 36.25 25C36.25 31.1187 31.1187 36.25 25 36.25ZM36.25 18.125C34.5775 18.125 33.125 19.5775 33.125 21.25C33.125 22.9225 34.5775 24.375 36.25 24.375C37.9225 24.375 39.375 22.9225 39.375 21.25C39.375 19.5775 37.9225 18.125 36.25 18.125ZM26.875 33.125H23.125V30H26.875V33.125ZM40.625 31.875C39.5469 31.875 38.6664 32.7555 38.6664 33.8336V38.8899H11.3336V33.8336C11.3336 32.7555 10.4531 31.875 9.37498 31.875H6.25V12.5H43.75V31.875H40.625Z" fill="#324D5B" />
+                    </Svg>
+                    <Text style={styles.takePhotoText}>Take a Photo</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={chooseFromCameraRoll} style={styles.choosePhotoBtn}>
+                    <Svg width="40" height="40" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <Path d="M1.25 7.5V42.5C1.25 44.9817 3.20672 46.9375 5.68748 46.9375H44.6875C47.1683 46.9375 49.125 44.9817 49.125 42.5V7.5C49.125 5.01823 47.1683 3.0625 44.6875 3.0625H5.68748C3.20672 3.0625 1.25 5.01823 1.25 7.5ZM3.43748 7.5C3.43748 6.4027 4.25415 5.5625 5.31248 5.5625H44.3125C45.3708 5.5625 46.1875 6.4027 46.1875 7.5V16.5625L31.8042 27.625L18.75 16.8023L4.125 27.0593V7.5ZM2.5 40H47.75V43.4375H2.5V40Z" fill="#324D5B" />
+                    </Svg>
+                    <Text style={styles.choosePhotoText}>Choose from Camera Roll</Text>
+                </TouchableOpacity>
+
+                {/* Display the selected image */}
+                {imageUri && (
+                    <Image
+                        source={{ uri: imageUri }}
+                        style={styles.selectedImage}
+                    />
+                )}
             </View>
         </View>
     )
@@ -149,7 +228,7 @@ const styles = StyleSheet.create({
         paddingRight: 10
     },
     textSection: {
-        height: '80%',
+        height: '50%',
         paddingVertical: 20,
     },
     titleInput: {
@@ -160,7 +239,7 @@ const styles = StyleSheet.create({
     },
     contentInput: {
         fontSize: 16,
-        height: '80%',
+        height: '40%',
         fontFamily: 'Menlo'
     },
     optionsContainer: {
@@ -173,5 +252,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 20
+    },
+    imageTxt: {
+        width: '100%',
+        alignItems: 'flex-end'
     }
 })
