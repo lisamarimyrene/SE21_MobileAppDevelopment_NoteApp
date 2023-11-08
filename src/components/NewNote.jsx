@@ -17,7 +17,6 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
     const [color, setColor] = useState(editNote ? editNote.color : 'yellow');
     const [imageUri, setImageUri] = useState(editNote ? editNote.image : null);
     const [fileUri, setFileUri] = useState(null); // Store the file URI where the image will be saved 
-    // const [imageData, setImageData] = useState(null);
     const [isImageOptionsModalVisible, setImageOptionsModalVisible] = useState(false); // To show/hide modal
 
 
@@ -48,27 +47,6 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
         getCameraPermission();
     }, []);
 
-    // Save image locally to app using file system
-    const saveImageToApp = async () => {
-        if (imageUri) {
-            const filename = 'image.jpg'; // Set a filename for the saved image
-            const fileUri = `${FileSystem.documentDirectory}${filename}`;
-
-            try {
-                await FileSystem.copyAsync({
-                    from: imageUri,
-                    to: fileUri,
-                });
-                console.log('Image saved successfully to', fileUri);
-            } catch (error) {
-                console.error('Error saving image:', error);
-            }
-        } else {
-            console.warn('No image URI to save.');
-        }
-    };
-
-
     // Take photo functionality
     const takePhoto = async () => {
         const result = await ImagePicker.launchCameraAsync({
@@ -80,7 +58,7 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
 
         // console.log(result);
         // If user took a picture
-        if (result) {
+        if (!result.canceled) {
             // Update image state
             setImageUri(result.assets[0].uri);
             // Hide modal
@@ -102,7 +80,7 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                 // Set the saved file URI
                 setFileUri(newFileUri);
                 // Set the selected image URI
-                setImageUri(result.uri); 
+                setImageUri(result.assets[0].uri); 
                 
                 // Save image data using AsyncStorage
                 await AsyncStorage.setItem(newFileUri, result.uri);
@@ -124,12 +102,11 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
         });
 
         // If user uploaded image from camera roll
-        if (result) {
+        if (!result.canceled) {
             // Update image state
             setImageUri(result.assets[0].uri);
             // Hide modal
             setImageOptionsModalVisible(false)
-
             // Set a filename for the uploaded image
             const filename = 'image.jpg'; // Set a filename for the saved image
             // Set the file uri for the uploaded image
@@ -146,7 +123,7 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                 // Set the saved file URI
                 setFileUri(newFileUri);
                 // Set the selected image URI
-                setImageUri(result.uri); 
+                setImageUri(result.assets[0].uri);
                 
                 // Save image data using AsyncStorage
                 await AsyncStorage.setItem(newFileUri, result.uri);
@@ -170,11 +147,6 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                 content: content,
                 image: imageUri,
             };
-
-            if (fileUri && imageUri) {
-                await AsyncStorage.setItem(fileUri, imageUri); // Save image data using AsyncStorage
-
-            }
 
             onSave(newNote);
             onCancel();
@@ -361,11 +333,9 @@ const styles = StyleSheet.create({
         fontFamily: 'Menlo',
     },
     imageInput: {
-        borderWidth: 3,
-        borderColor: '#000',
         height: 200,
         width: '100%',
-        alignItems: 'flex-end'
+        marginTop: 30
     },
     optionsContainer: {
         width: '100%',
