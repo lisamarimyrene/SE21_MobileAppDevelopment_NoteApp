@@ -1,11 +1,13 @@
 
-import { TextInput, Text, View, StyleSheet, TouchableOpacity, Alert, Image, Modal, Pressable } from 'react-native'
+import { TextInput, Text, View, StyleSheet, TouchableOpacity, Alert, Image, Modal, ScrollView } from 'react-native'
 import { colorOptions } from '../../utils/colorFunctions';
 import Svg, { Path, Rect } from 'react-native-svg';
 import React, { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
+import * as FileSystem from 'expo-file-system';
 import { colors } from '../../themes/colors';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
@@ -13,8 +15,11 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
     const [title, setTitle] = useState(editNote ? editNote.title : '');
     const [content, setContent] = useState(editNote ? editNote.content : '');
     const [color, setColor] = useState(editNote ? editNote.color : 'yellow');
-    const [imageUri, setImageUri] = useState(null); // Store the image URI
+    const [imageUri, setImageUri] = useState(editNote ? editNote.image : null);
+    const [fileUri, setFileUri] = useState(null); // Store the file URI where the image will be saved 
+    // const [imageData, setImageData] = useState(null);
     const [isImageOptionsModalVisible, setImageOptionsModalVisible] = useState(false); // To show/hide modal
+
 
     // Handle color change of the post-it note
     const handleColorChange = (color) => {
@@ -43,6 +48,27 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
         getCameraPermission();
     }, []);
 
+    // Save image locally to app using file system
+    const saveImageToApp = async () => {
+        if (imageUri) {
+            const filename = 'image.jpg'; // Set a filename for the saved image
+            const fileUri = `${FileSystem.documentDirectory}${filename}`;
+
+            try {
+                await FileSystem.copyAsync({
+                    from: imageUri,
+                    to: fileUri,
+                });
+                console.log('Image saved successfully to', fileUri);
+            } catch (error) {
+                console.error('Error saving image:', error);
+            }
+        } else {
+            console.warn('No image URI to save.');
+        }
+    };
+
+
     // Take photo functionality
     const takePhoto = async () => {
         const result = await ImagePicker.launchCameraAsync({
@@ -52,11 +78,39 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
             quality: 1,
         });
 
-        if (!result.cancelled) {
-            // Set the image URI to display the captured photo
-            const uri = result.assets[0].uri;
-            setImageUri(uri);
-            setImageOptionsModalVisible(false); // Close the modal
+        // console.log(result);
+        // If user took a picture
+        if (result) {
+            // Update image state
+            setImageUri(result.assets[0].uri);
+            // Hide modal
+            setImageOptionsModalVisible(false)
+
+            // Set a filename for the uploaded image
+            const filename = 'image.jpg'; // Set a filename for the saved image
+            // Set the file uri for the uploaded image
+            const newFileUri = `${FileSystem.documentDirectory}${filename}`;
+
+            // Create a promise and show error if not fulfilled
+            try {
+                // Copy file and save
+                await FileSystem.copyAsync({
+                    from: result.uri, // Use result.uri as the source
+                    to: newFileUri,
+                });
+
+                // Set the saved file URI
+                setFileUri(newFileUri);
+                // Set the selected image URI
+                setImageUri(result.uri); 
+                
+                // Save image data using AsyncStorage
+                await AsyncStorage.setItem(newFileUri, result.uri);
+                
+                console.log('Image saved successfully to', newFileUri);
+            } catch (error) {
+                console.error('Error saving image:', error);
+            }
         }
     };
 
@@ -69,16 +123,45 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
             quality: 1,
         });
 
-        if (!result.cancelled) {
-            // Set the image URI to display the selected image
-            const uri = result.assets[0].uri;
-            setImageUri(uri);
-            setImageOptionsModalVisible(false); // Close the modal
+        // If user uploaded image from camera roll
+        if (result) {
+            // Update image state
+            setImageUri(result.assets[0].uri);
+            // Hide modal
+            setImageOptionsModalVisible(false)
+
+            // Set a filename for the uploaded image
+            const filename = 'image.jpg'; // Set a filename for the saved image
+            // Set the file uri for the uploaded image
+            const newFileUri = `${FileSystem.documentDirectory}${filename}`;
+
+            // Create a promise and show error if not fulfilled
+            try {
+                // Copy file and save
+                await FileSystem.copyAsync({
+                    from: result.uri, // Use result.uri as the source
+                    to: newFileUri,
+                });
+
+                // Set the saved file URI
+                setFileUri(newFileUri);
+                // Set the selected image URI
+                setImageUri(result.uri); 
+                
+                // Save image data using AsyncStorage
+                await AsyncStorage.setItem(newFileUri, result.uri);
+                
+                console.log('Image saved successfully to', newFileUri);
+            } catch (error) {
+                console.error('Error saving image:', error);
+            }
         }
+        // Hide modal
+        setImageOptionsModalVisible(false)
     };
 
     // Handle the saving functionality
-    const handleSave = () => {
+    const handleSave = async () => {
         if (title || content) {
             const newNote = {
                 id: editNote ? editNote.id : noteId(),
@@ -87,8 +170,15 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                 content: content,
                 image: imageUri,
             };
+
+            if (fileUri && imageUri) {
+                await AsyncStorage.setItem(fileUri, imageUri); // Save image data using AsyncStorage
+
+            }
+
             onSave(newNote);
             onCancel();
+            
         }
         else {
             Alert.alert(
@@ -150,7 +240,10 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                 </TouchableOpacity>
             </View>
 
-            <View style={styles.textSection}>
+            <ScrollView style={styles.inputSection}
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
+            >
                 <TextInput
                     style={styles.titleInput}
                     placeholder="Title"
@@ -168,10 +261,10 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                 {imageUri && (
                     <Image
                         source={{ uri: imageUri }}
-                        style={styles.selectedImage}
+                        style={styles.imageInput}
                     />
                 )}
-            </View>
+            </ScrollView>
 
             <View style={styles.optionsContainer}>
                 <View style={styles.chooseColorSection}>
@@ -240,6 +333,7 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
         paddingHorizontal: 20,
+        paddingBottom: 25
 
     },
     saveSection: {
@@ -252,26 +346,33 @@ const styles = StyleSheet.create({
     saveBtn: {
         paddingRight: 10
     },
-    textSection: {
-        height: '80%',
-        paddingVertical: 20,
+    inputSection: {
+        paddingBottom: 20,
     },
     titleInput: {
         fontSize: 26,
         marginBottom: 30,
-        height: '10%',
-        fontFamily: 'Menlo'
+        height: 50,
+        fontFamily: 'Menlo',
     },
     contentInput: {
         fontSize: 16,
-        height: '85%',
+        height: 'auto',
         fontFamily: 'Menlo',
+    },
+    imageInput: {
+        borderWidth: 3,
+        borderColor: '#000',
+        height: 200,
+        width: '100%',
+        alignItems: 'flex-end'
     },
     optionsContainer: {
         width: '100%',
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
+        paddingVertical: 10
     },
     chooseColorSection: {
         flexDirection: 'row',
