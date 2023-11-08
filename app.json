@@ -33,11 +33,13 @@
       [
         "expo-media-library",
         {
-          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos.",
-          "savePhotosPermission": "Allow $(PRODUCT_NAME) to save photos.",
+          "photosPermission": "Allow NoteApp to access your photos.",
+          "savePhotosPermission": "Allow NoteApp to save photos.",
           "isAccessMediaLocationEnabled": true
         }
-      ]
+      ],
+      ["expo-image-picker"],
+      ["expo-media-library"]
     ]
   },
   "packagerOpts": {
