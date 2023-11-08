@@ -1,12 +1,11 @@
 
-import { TextInput, Text, View, StyleSheet, TouchableOpacity, Alert, Image } from 'react-native'
+import { TextInput, Text, View, StyleSheet, TouchableOpacity, Alert, Image, Modal, Pressable } from 'react-native'
 import { colorOptions } from '../../utils/colorFunctions';
 import Svg, { Path, Rect } from 'react-native-svg';
 import React, { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
-
-
+import { colors } from '../../themes/colors';
 
 
 export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
@@ -15,20 +14,21 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
     const [content, setContent] = useState(editNote ? editNote.content : '');
     const [color, setColor] = useState(editNote ? editNote.color : 'yellow');
     const [imageUri, setImageUri] = useState(null); // Store the image URI
+    const [isImageOptionsModalVisible, setImageOptionsModalVisible] = useState(false); // To show/hide modal
 
     // Handle color change of the post-it note
     const handleColorChange = (color) => {
         setColor(color);
     };
 
-    // Ger media library permission
+    // Get media library permission
     const getCameraRollPermission = async () => {
         const { status } = await MediaLibrary.requestPermissionsAsync();
         if (status !== 'granted') {
             alert('Permission to access camera roll is required!');
         }
     };
-    
+
     // Get camera permission
     const getCameraPermission = async () => {
         const { status } = await ImagePicker.requestCameraPermissionsAsync();
@@ -51,14 +51,15 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
             aspect: [4, 3],
             quality: 1,
         });
-    
+
         if (!result.cancelled) {
             // Set the image URI to display the captured photo
             const uri = result.assets[0].uri;
             setImageUri(uri);
+            setImageOptionsModalVisible(false); // Close the modal
         }
     };
-    
+
     // Choose picture from cameraroll functionality
     const chooseFromCameraRoll = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
@@ -67,11 +68,12 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
             aspect: [4, 3],
             quality: 1,
         });
-    
+
         if (!result.cancelled) {
             // Set the image URI to display the selected image
             const uri = result.assets[0].uri;
             setImageUri(uri);
+            setImageOptionsModalVisible(false); // Close the modal
         }
     };
 
@@ -163,7 +165,14 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                     multiline={true}
                     onChangeText={text => setContent(text)}
                 />
+                {imageUri && (
+                    <Image
+                        source={{ uri: imageUri }}
+                        style={styles.selectedImage}
+                    />
+                )}
             </View>
+
             <View style={styles.optionsContainer}>
                 <View style={styles.chooseColorSection}>
                     {colorOptions.map((colorOption) => (
@@ -184,28 +193,44 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                         </TouchableOpacity>
                     ))}
                 </View>
-                <TouchableOpacity onPress={takePhoto} style={styles.takePhotoBtn}>
-                    <Svg width="40" height="40" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <Path d="M43.75 6.25H36.25L33.125 3.125H16.875L13.75 6.25H6.25C3.83172 6.25 1.875 8.20672 1.875 10.625V37.5C1.875 39.9183 3.83172 41.875 6.25 41.875H43.75C46.1683 41.875 48.125 39.9183 48.125 37.5V10.625C48.125 8.20672 46.1683 6.25 43.75 6.25ZM25 36.25C18.8813 36.25 13.75 31.1187 13.75 25C13.75 18.8813 18.8813 13.75 25 13.75C31.1187 13.75 36.25 18.8813 36.25 25C36.25 31.1187 31.1187 36.25 25 36.25ZM36.25 18.125C34.5775 18.125 33.125 19.5775 33.125 21.25C33.125 22.9225 34.5775 24.375 36.25 24.375C37.9225 24.375 39.375 22.9225 39.375 21.25C39.375 19.5775 37.9225 18.125 36.25 18.125ZM26.875 33.125H23.125V30H26.875V33.125ZM40.625 31.875C39.5469 31.875 38.6664 32.7555 38.6664 33.8336V38.8899H11.3336V33.8336C11.3336 32.7555 10.4531 31.875 9.37498 31.875H6.25V12.5H43.75V31.875H40.625Z" fill="#324D5B" />
+                <TouchableOpacity style={styles.takePhotoBtn} onPress={() => setImageOptionsModalVisible(true)}>
+                    <Svg width="40" height="40" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <Path d="M23 17C23 17.5304 22.7893 18.0391 22.4142 18.4142C22.0391 18.7893 21.5304 19 21 19H3C2.46957 19 1.96086 18.7893 1.58579 18.4142C1.21071 18.0391 1 17.5304 1 17V6C1 5.46957 1.21071 4.96086 1.58579 4.58579C1.96086 4.21071 2.46957 4 3 4H7L9 1H15L17 4H21C21.5304 4 22.0391 4.21071 22.4142 4.58579C22.7893 4.96086 23 5.46957 23 6V17Z" stroke="#707070" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <Path d="M12 15C14.2091 15 16 13.2091 16 11C16 8.79086 14.2091 7 12 7C9.79086 7 8 8.79086 8 11C8 13.2091 9.79086 15 12 15Z" stroke="#707070" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </Svg>
-                    <Text style={styles.takePhotoText}>Take a Photo</Text>
+                    {/* <Text style={styles.takePhotoText}>Take a Photo</Text> */}
                 </TouchableOpacity>
-
-                <TouchableOpacity onPress={chooseFromCameraRoll} style={styles.choosePhotoBtn}>
-                    <Svg width="40" height="40" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <Path d="M1.25 7.5V42.5C1.25 44.9817 3.20672 46.9375 5.68748 46.9375H44.6875C47.1683 46.9375 49.125 44.9817 49.125 42.5V7.5C49.125 5.01823 47.1683 3.0625 44.6875 3.0625H5.68748C3.20672 3.0625 1.25 5.01823 1.25 7.5ZM3.43748 7.5C3.43748 6.4027 4.25415 5.5625 5.31248 5.5625H44.3125C45.3708 5.5625 46.1875 6.4027 46.1875 7.5V16.5625L31.8042 27.625L18.75 16.8023L4.125 27.0593V7.5ZM2.5 40H47.75V43.4375H2.5V40Z" fill="#324D5B" />
-                    </Svg>
-                    <Text style={styles.choosePhotoText}>Choose from Camera Roll</Text>
-                </TouchableOpacity>
-
-                {/* Display the selected image */}
-                {imageUri && (
-                    <Image
-                        source={{ uri: imageUri }}
-                        style={styles.selectedImage}
-                    />
-                )}
             </View>
+
+            <View style={styles.modalContainer}>
+                <Modal
+                    visible={isImageOptionsModalVisible}
+                    transparent={true}
+                    animationType="slide"
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                        setImageOptionsModalVisible(!isImageOptionsModalVisible)
+                    }}>
+
+                    <View style={styles.centeredModal}>
+                        <View style={styles.imageOptionsModal}>
+                            <View style={styles.modalPictureOptionsContainer}>
+                                <TouchableOpacity style={styles.modalChooseBtn} onPress={takePhoto}>
+                                    <Text style={styles.modalOptionText}>Take a Photo</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={styles.modalChooseBtn} onPress={chooseFromCameraRoll}>
+                                    <Text style={styles.modalOptionText}>Choose from Camera Roll</Text>
+                                </TouchableOpacity>
+
+                            </View>
+                            <TouchableOpacity style={styles.modalCancelBtn} onPress={() => setImageOptionsModalVisible(false)}>
+                                <Text style={styles.modalOptionText}>Cancel</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+            </View>
+
         </View>
     )
 }
@@ -228,7 +253,7 @@ const styles = StyleSheet.create({
         paddingRight: 10
     },
     textSection: {
-        height: '50%',
+        height: '80%',
         paddingVertical: 20,
     },
     titleInput: {
@@ -239,22 +264,69 @@ const styles = StyleSheet.create({
     },
     contentInput: {
         fontSize: 16,
-        height: '40%',
-        fontFamily: 'Menlo'
+        height: '85%',
+        fontFamily: 'Menlo',
     },
     optionsContainer: {
         width: '100%',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     chooseColorSection: {
         flexDirection: 'row',
         width: '65%',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: 20
+        paddingVertical: 20,
     },
-    imageTxt: {
-        width: '100%',
-        alignItems: 'flex-end'
+    takePhotoBtn: {
+        width: '15%',
+    },
+    centeredModal: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    imageOptionsModal: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: colors.background,
+        height: '20%',
+        width: '80%',
+        paddingBottom: 10,
+        borderRadius: 20,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 1,
+            height: 2,
+        },
+        shadowOpacity: 0.13,
+        shadowRadius: 8.00,
+        elevation: 4,
+    },
+    modalPictureOptionsContainer: {
+        flexDirection: 'row',
+        width: '80%',
+        justifyContent: 'space-between'
+
+    },
+    modalOptionText: {
+        textAlign: 'center',
+    },
+    modalChooseBtn: {
+        backgroundColor: 'white',
+        padding: 10,
+        width: 110,
+        borderRadius: 5,
+        marginTop: 20,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    modalCancelBtn: {
+        backgroundColor: colors.blue.medium,
+        padding: 10,
+        borderRadius: 20,
+        marginTop: 20
     }
 })
