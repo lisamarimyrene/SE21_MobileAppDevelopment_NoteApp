@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView, TouchableOpacity, Text } from 'react-native'
+import { View, StyleSheet, ScrollView, TouchableOpacity, Text, Modal } from 'react-native'
 import { PostIt } from '../components/PostIt'
 import { NewNote } from '../components/NewNote';
 import { colors } from '../../themes/colors'
@@ -131,7 +131,9 @@ export const Index = () => {
                 )}
             </ScrollView>
             {showNewNote ? (
-                <NewNote onSave={handleSaveNote} onCancel={handleCancel} noteId={getNewId} editNote={editNote} />
+                <Modal styles={styles.newNote} animationType="slide">
+                <NewNote  animationType="slide" onSave={handleSaveNote} onCancel={handleCancel} noteId={getNewId} editNote={editNote} />
+                </Modal>
             ) : (
                 <TouchableOpacity
                     style={styles.buttonContainer}
@@ -173,6 +175,9 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap', // Allow the PostIt components to wrap
         justifyContent: 'space-between',
         padding: 5
+    },
+    newNote: {
+        height: '90%'
     },
     buttonContainer: {
         flex: 0.3, // Set to 30% of the available height

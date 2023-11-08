@@ -305,8 +305,9 @@ const styles = StyleSheet.create({
     newNoteContainer: {
         height: '100%',
         width: '100%',
-        paddingHorizontal: 20,
-        paddingBottom: 25
+        paddingHorizontal: 30,
+        paddingTop: 60,
+        paddingBottom: 30
 
     },
     saveSection: {
