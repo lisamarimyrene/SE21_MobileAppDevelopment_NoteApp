@@ -1,75 +1,23 @@
 import { View, StyleSheet, Text} from 'react-native'
 import { NewNote } from '../components/NewNote';
 import { colors } from '../../themes/colors'
-import React, { useState, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
 import { Notes } from '../components/Notes';
 import { NewNoteButton } from '../components/NewNoteButton';
+import { useNotes } from '../hooks/useNotes';
+import { getNewId } from '../utils/getId'
 
 
 export const Index = () => {
     const [showNewNote, setShowNewNote] = useState(false);
-    const [notes, setNotes] = useState([]);
     const [editNote, setEditNote] = useState(null);
+
+    const { notes, handleSaveNote } = useNotes()
 
     // Handle the edit of an exisiting note
     const handleEditNote = (note) => {
         setEditNote(note);
         setShowNewNote(true);
-    };
-
-    // Load all saved notes
-    //* lage en hook? 
-    useEffect(() => {
-        // Load notes from AsyncStorage
-        AsyncStorage.getItem('notes')
-            .then(savedNotes => {
-                if (savedNotes) {
-                    const parsedNotes = JSON.parse(savedNotes);
-                    setNotes(parsedNotes);
-                }
-            })
-            // Error message in case it's not able to load notes
-            .catch(error => {
-                console.error('Error loading notes from AsyncStorage: ', error);
-            });
-    }, []);
-
-    // Function to generate the an unique id for the postit notes
-    //* Endre til uu7(?)
-    const getNewId = () => {
-        const newId = Date.now();
-        return newId.toString();
-    };
-
-    // Save note created or edited
-    const handleSaveNote = (newNote) => {
-        let updatedNotes;
-
-        if (editNote) {
-            // If you are editing a note, update it in the existing notes
-            updatedNotes = notes.map((note) =>
-                note.id === editNote.id ? { ...note, ...newNote } : note
-            );
-            // Reset input fields to null
-            setEditNote(null);
-        } else {
-            // If you are adding a new note, add it to the existing notes
-            newNote.id = getNewId();
-            updatedNotes = [...notes, newNote];
-        }
-
-        // Update the state with the updated notes
-        setNotes(updatedNotes);
-
-        // Store the updated notes in AsyncStorage
-        AsyncStorage.setItem('notes', JSON.stringify(updatedNotes))
-            .then(() => {
-                setShowNewNote(false);
-            })
-            .catch((error) => {
-                console.error('Error saving notes to AsyncStorage: ', error);
-            });
     };
 
     // ! Clean up code
@@ -111,6 +59,7 @@ export const Index = () => {
     return (
         <View style={styles.main}>
             <Notes notes={notes} handleEditNote={handleEditNote} />
+            
             {showNewNote ? (
                 <NewNote animationType="slide" onSave={handleSaveNote} onCancel={handleCancel} noteId={getNewId} editNote={editNote} />
             ) : (
