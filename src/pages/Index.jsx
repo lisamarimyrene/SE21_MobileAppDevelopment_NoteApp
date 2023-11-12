@@ -1,11 +1,10 @@
-import { View, StyleSheet, ScrollView, TouchableOpacity, Text, Modal } from 'react-native'
-import { PostIt } from '../components/PostIt'
+import { View, StyleSheet, Text} from 'react-native'
 import { NewNote } from '../components/NewNote';
 import { colors } from '../../themes/colors'
-import Svg, { Path } from 'react-native-svg';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Notes } from '../components/Notes';
+import { NewNoteButton } from '../components/NewNoteButton';
 
 
 export const Index = () => {
@@ -13,7 +12,14 @@ export const Index = () => {
     const [notes, setNotes] = useState([]);
     const [editNote, setEditNote] = useState(null);
 
-    // Load all saved notes 
+    // Handle the edit of an exisiting note
+    const handleEditNote = (note) => {
+        setEditNote(note);
+        setShowNewNote(true);
+    };
+
+    // Load all saved notes
+    //* lage en hook? 
     useEffect(() => {
         // Load notes from AsyncStorage
         AsyncStorage.getItem('notes')
@@ -30,6 +36,7 @@ export const Index = () => {
     }, []);
 
     // Function to generate the an unique id for the postit notes
+    //* Endre til uu7(?)
     const getNewId = () => {
         const newId = Date.now();
         return newId.toString();
@@ -76,7 +83,7 @@ export const Index = () => {
                 // Remove the note from your data or state
                 setNotes((prevNotes) => prevNotes.filter((note) => note.id !== editNote.id));
             }
-    
+
             if (editNote) {
                 // Update AsyncStorage to remove the deleted note
                 AsyncStorage.setItem(
@@ -103,20 +110,11 @@ export const Index = () => {
 
     return (
         <View style={styles.main}>
-            <Notes notes={notes} />
+            <Notes notes={notes} handleEditNote={handleEditNote} />
             {showNewNote ? (
-                <Modal styles={styles.newNote} animationType="slide">
-                <NewNote  animationType="slide" onSave={handleSaveNote} onCancel={handleCancel} noteId={getNewId} editNote={editNote} />
-                </Modal>
+                <NewNote animationType="slide" onSave={handleSaveNote} onCancel={handleCancel} noteId={getNewId} editNote={editNote} />
             ) : (
-                <TouchableOpacity
-                    style={styles.buttonContainer}
-                    onPress={() => setShowNewNote(true)}
-                >
-                    <Svg width="90" height="90" viewBox="0 0 162 162" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <Path d="M81 16.2C45.2142 16.2 16.2 45.2142 16.2 81C16.2 116.786 45.2142 145.8 81 145.8C116.786 145.8 145.8 116.786 145.8 81C145.8 45.2142 116.786 16.2 81 16.2ZM113.4 86.4H86.4V113.4C86.4 116.386 83.9808 118.8 81 118.8C78.0192 118.8 75.6 116.386 75.6 113.4V86.4H48.6C45.6192 86.4 43.2 83.9862 43.2 81C43.2 78.0138 45.6192 75.6 48.6 75.6H75.6V48.6C75.6 45.6138 78.0192 43.2 81 43.2C83.9808 43.2 86.4 45.6138 86.4 48.6V75.6H113.4C116.381 75.6 118.8 78.0138 118.8 81C118.8 83.9862 116.381 86.4 113.4 86.4Z" fill="#B17A9B" />
-                    </Svg>
-                </TouchableOpacity>
+                <NewNoteButton setShowNewNote={setShowNewNote} />
             )}
         </View>
     )
@@ -132,13 +130,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         height: 'auto'
-    },
-    newNote: {
-        height: '90%'
-    },
-    buttonContainer: {
-        flex: 0.3, // Set to 30% of the available height
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+    }
 })

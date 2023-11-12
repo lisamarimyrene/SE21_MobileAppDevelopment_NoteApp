@@ -2,13 +2,7 @@ import { ScrollView, View, Text, StyleSheet } from "react-native"
 import { colors } from "../../themes/colors"
 import { PostIt } from "./PostIt"
 
-export const Notes = ({ notes }) => {
-    
-    // Handle the edit of an exisiting note
-    const handleEditNote = (note) => {
-        setEditNote(note);
-        setShowNewNote(true);
-    };
+export const Notes = ({ notes, handleEditNote }) => {
 
     if (!notes.length) {
         return (
@@ -23,7 +17,6 @@ export const Notes = ({ notes }) => {
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
         >
-
             <View style={styles.postitSection}>
                 {/* Endre til flatlist */}
                 {notes.map((note) => (
