@@ -15,7 +15,7 @@ export const Index = () => {
     const { notes, handleSaveNote } = useNotes()
 
     // Handle the edit of an exisiting note
-    const handleEditNote = (note) => {
+    const toggleEditNoteModal = (note) => {
         setEditNote(note);
         setShowNewNote(true);
     };
@@ -58,7 +58,7 @@ export const Index = () => {
 
     return (
         <View style={styles.main}>
-            <Notes notes={notes} handleEditNote={handleEditNote} />
+            <Notes notes={notes} handleEditNote={toggleEditNoteModal} />
             
             {showNewNote ? (
                 <NewNote animationType="slide" onSave={handleSaveNote} onCancel={handleCancel} noteId={getNewId} editNote={editNote} />
