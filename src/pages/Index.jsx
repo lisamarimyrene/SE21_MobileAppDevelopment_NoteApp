@@ -35,7 +35,6 @@ export const Index = () => {
                     </View>
                 ) : (
                     <View style={styles.postitSection}>
-                        {/* Endre til flatlist */}
                         {notes.map((note) => (
                             <PostIt
                                 key={note.id}
