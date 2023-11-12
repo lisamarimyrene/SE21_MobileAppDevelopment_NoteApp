@@ -5,6 +5,7 @@ import { colors } from '../../themes/colors'
 import Svg, { Path } from 'react-native-svg';
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Notes } from '../components/Notes';
 
 
 export const Index = () => {
@@ -100,37 +101,9 @@ export const Index = () => {
         }
     };
 
-    // Handle the edit of an exisiting note
-    const handleEditNote = (note) => {
-        setEditNote(note);
-        setShowNewNote(true);
-    };
-
     return (
         <View style={styles.main}>
-            <ScrollView style={styles.scrollContainer}
-                showsVerticalScrollIndicator={false}
-                showsHorizontalScrollIndicator={false}
-            >
-                {!notes.length ? (
-                    <View style={styles.placeholderTxtContainer}>
-                        <Text style={styles.placeholderTxt}>Click the + button to create new note</Text>
-                    </View>
-                ) : (
-                    <View style={styles.postitSection}>
-                        {/* Endre til flatlist */}
-                        {notes.map((note) => (
-                            <PostIt
-                                key={note.id}
-                                color={note.color}
-                                title={note.title}
-                                content={note.content}
-                                onEdit={() => handleEditNote(note)}
-                            />
-                        ))}
-                    </View>
-                )}
-            </ScrollView>
+            <Notes notes={notes} />
             {showNewNote ? (
                 <Modal styles={styles.newNote} animationType="slide">
                 <NewNote  animationType="slide" onSave={handleSaveNote} onCancel={handleCancel} noteId={getNewId} editNote={editNote} />
@@ -159,23 +132,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         height: 'auto'
-    },
-    scrollContainer: {
-        flex: 0.7,
-    },
-    placeholderTxtContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    placeholderTxt: {
-        color: colors.text,
-        fontFamily: 'Menlo'
-    },
-    postitSection: {
-        flexDirection: 'row',
-        flexWrap: 'wrap', // Allow the PostIt components to wrap
-        justifyContent: 'space-between',
-        padding: 5
     },
     newNote: {
         height: '90%'

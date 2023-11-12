@@ -2,7 +2,7 @@
 import { find } from 'lodash'
 import { Text, View, StyleSheet, FlatList, ScrollView, TouchableOpacity } from 'react-native'
 import { colors } from '../../themes/colors'
-import { setColors, strokeColors } from '../../utils/colorFunctions'
+import { setColors, strokeColors } from '../utils/colorFunctions'
 import Svg, { Path } from 'react-native-svg';
 
 export const PostIt = ({ color, title, content, onEdit }) => {

@@ -1,6 +1,6 @@
 
 import { TextInput, Text, View, StyleSheet, TouchableOpacity, Alert, Image, Modal, ScrollView } from 'react-native'
-import { colorOptions } from '../../utils/colorFunctions';
+import { colorOptions } from '../utils/colorFunctions';
 import Svg, { Path, Rect } from 'react-native-svg';
 import React, { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
@@ -11,13 +11,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
-    // Set states, and populate fields if note exists.
+    // Set states, and populate fields if note exists (compares)
     const [title, setTitle] = useState(editNote ? editNote.title : '');
     const [content, setContent] = useState(editNote ? editNote.content : '');
     const [color, setColor] = useState(editNote ? editNote.color : 'yellow');
     const [imageUri, setImageUri] = useState(editNote ? editNote.image : null);
-    //! Remove?
-    const [fileUri, setFileUri] = useState(null); // Store the file URI where the image will be saved 
+    // Opens and close image modal
     const [isImageOptionsModalVisible, setImageOptionsModalVisible] = useState(false); // To show/hide modal
 
 
@@ -78,8 +77,6 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                     to: newFileUri,
                 });
 
-                // Set the saved file URI
-                setFileUri(newFileUri);
                 // Set the selected image URI
                 setImageUri(result.assets[0].uri); 
                 
@@ -121,8 +118,6 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                     to: newFileUri,
                 });
 
-                // Set the saved file URI
-                setFileUri(newFileUri);
                 // Set the selected image URI
                 setImageUri(result.assets[0].uri);
                 
