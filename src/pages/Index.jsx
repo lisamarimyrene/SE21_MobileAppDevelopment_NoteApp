@@ -3,25 +3,108 @@ import { PostIt } from '../components/PostIt'
 import { NewNote } from '../components/NewNote';
 import { colors } from '../../themes/colors'
 import Svg, { Path } from 'react-native-svg';
-import { handleData } from '../hooks/useNotesData';
+import React, { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export const Index = () => {
-    // const [showNewNote, setShowNewNote] = useState(false);
-    // const [notes, setNotes] = useState([]);
-    // const [editNote, setEditNote] = useState(null);
+    const [showNewNote, setShowNewNote] = useState(false);
+    const [notes, setNotes] = useState([]);
+    const [editNote, setEditNote] = useState(null);
 
-    const {
-        showNewNote, 
-        setShowNewNote,
-        notes,
-        editNote,
-        handleSaveNote,
-        handleCancel,
-        handleEditNote  
-    } = handleData()
+    // Load all saved notes 
+    useEffect(() => {
+        // Load notes from AsyncStorage
+        AsyncStorage.getItem('notes')
+            .then(savedNotes => {
+                if (savedNotes) {
+                    const parsedNotes = JSON.parse(savedNotes);
+                    setNotes(parsedNotes);
+                }
+            })
+            // Error message in case it's not able to load notes
+            .catch(error => {
+                console.error('Error loading notes from AsyncStorage: ', error);
+            });
+    }, []);
 
+    // Function to generate the an unique id for the postit notes
+    const getNewId = () => {
+        const newId = Date.now();
+        return newId.toString();
+    };
 
+    // Save note created or edited
+    const handleSaveNote = (newNote) => {
+        let updatedNotes;
+
+        if (editNote) {
+            // If you are editing a note, update it in the existing notes
+            updatedNotes = notes.map((note) =>
+                note.id === editNote.id ? { ...note, ...newNote } : note
+            );
+            // Reset input fields to null
+            setEditNote(null);
+        } else {
+            // If you are adding a new note, add it to the existing notes
+            newNote.id = getNewId();
+            updatedNotes = [...notes, newNote];
+        }
+
+        // Update the state with the updated notes
+        setNotes(updatedNotes);
+
+        // Store the updated notes in AsyncStorage
+        AsyncStorage.setItem('notes', JSON.stringify(updatedNotes))
+            .then(() => {
+                setShowNewNote(false);
+            })
+            .catch((error) => {
+                console.error('Error saving notes to AsyncStorage: ', error);
+            });
+    };
+
+    // ! Clean up code
+    // If user cancels the new note (not saving)
+    const handleCancel = (isDelete, tempId) => {
+        if (isDelete) {
+            if (tempId) {
+                // Remove the temporary note by its unique ID
+                setNotes((prevNotes) => prevNotes.filter((note) => note.id !== tempId));
+            } else if (editNote) {
+                // Remove the note from your data or state
+                setNotes((prevNotes) => prevNotes.filter((note) => note.id !== editNote.id));
+            }
+    
+            if (editNote) {
+                // Update AsyncStorage to remove the deleted note
+                AsyncStorage.setItem(
+                    'notes',
+                    JSON.stringify(notes.filter((note) => (tempId ? note.id !== tempId : note.id !== editNote.id)))
+                )
+                    .then(() => {
+                        // Dismiss the editing view
+                        setShowNewNote(false);
+                        setEditNote(null);
+                    })
+                    .catch((error) => {
+                        console.error('Error saving notes to AsyncStorage: ', error);
+                    });
+            } else {
+                // If there is no `editNote`, simply dismiss the editing view
+                setShowNewNote(false);
+            }
+        } else {
+            // Dismiss the editing view
+            setShowNewNote(false);
+        }
+    };
+
+    // Handle the edit of an exisiting note
+    const handleEditNote = (note) => {
+        setEditNote(note);
+        setShowNewNote(true);
+    };
 
     return (
         <View style={styles.main}>
@@ -35,9 +118,14 @@ export const Index = () => {
                     </View>
                 ) : (
                     <View style={styles.postitSection}>
+                        {/* Endre til flatlist */}
                         {notes.map((note) => (
                             <PostIt
                                 key={note.id}
+                                color={note.color}
+                                title={note.title}
+                                content={note.content}
+                                onEdit={() => handleEditNote(note)}
                             />
                         ))}
                     </View>
@@ -45,7 +133,7 @@ export const Index = () => {
             </ScrollView>
             {showNewNote ? (
                 <Modal styles={styles.newNote} animationType="slide">
-                <NewNote  animationType="slide" />
+                <NewNote  animationType="slide" onSave={handleSaveNote} onCancel={handleCancel} noteId={getNewId} editNote={editNote} />
                 </Modal>
             ) : (
                 <TouchableOpacity

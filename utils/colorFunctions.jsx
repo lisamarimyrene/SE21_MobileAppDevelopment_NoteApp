@@ -1,4 +1,4 @@
-import { colors } from "../../themes/colors";
+import { colors } from "../themes/colors";
 
 // Define a mapping from color values to custom classNames
 export const setColors = {
