@@ -1,16 +1,16 @@
 
 import { TextInput, Text, View, StyleSheet, TouchableOpacity, Alert, Image, Modal, ScrollView } from 'react-native'
-import { colorOptions } from '../utils/colorFunctions';
+import { colorOptions } from '../src/utils/colorFunctions';
 import Svg, { Path, Rect } from 'react-native-svg';
 import React, { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
 import * as FileSystem from 'expo-file-system';
-import { colors } from '../../themes/colors';
+import { colors } from '../themes/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
+const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
     // Set states, and populate fields if note exists (compares)
     const [title, setTitle] = useState(editNote ? editNote.title : '');
     const [content, setContent] = useState(editNote ? editNote.content : '');
@@ -194,7 +194,7 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
 
 
     return (
-        <Modal styles={styles.newNote} animationType="slide">
+        
             <View style={styles.newNoteContainer}>
                 <View style={styles.saveSection}>
                     <TouchableOpacity onPress={handleCancel}>
@@ -293,7 +293,7 @@ export const NewNote = ({ onSave, onCancel, noteId, editNote }) => {
                     </Modal>
                 </View>
             </View>
-        </Modal>
+  
     )
 }
 
@@ -401,3 +401,5 @@ const styles = StyleSheet.create({
         marginTop: 20
     }
 })
+
+export default NewNote;

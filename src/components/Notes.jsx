@@ -1,8 +1,10 @@
 import { ScrollView, View, Text, StyleSheet } from "react-native"
 import { colors } from "../../themes/colors"
+import { useModal } from "../hooks/useModal"
 import { PostIt } from "./PostIt"
 
 export const Notes = ({ notes, handleEditNote }) => {
+    const { toggleModal } = useModal()
 
     if (!notes.length) {
         return (
@@ -25,7 +27,7 @@ export const Notes = ({ notes, handleEditNote }) => {
                         color={note.color}
                         title={note.title}
                         content={note.content}
-                        onEdit={() => handleEditNote(note)}
+                        onEdit={() => toggleModal()}
                     />
                 ))}
             </View>

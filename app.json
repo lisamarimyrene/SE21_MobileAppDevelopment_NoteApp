@@ -11,6 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "scheme": "app/Index.jsx",
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -38,8 +39,13 @@
           "isAccessMediaLocationEnabled": true
         }
       ],
-      ["expo-image-picker"],
-      ["expo-media-library"]
+      [
+        "expo-image-picker"
+      ],
+      [
+        "expo-media-library"
+      ],
+      "expo-router"
     ]
   },
   "packagerOpts": {
