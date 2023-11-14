@@ -1,3 +1,6 @@
+import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from 'expo-media-library';
+
 // Get media library permission
 export const getCameraRollPermission = async () => {
     const { status } = await MediaLibrary.requestPermissionsAsync();

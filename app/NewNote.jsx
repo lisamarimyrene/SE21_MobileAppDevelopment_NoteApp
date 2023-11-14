@@ -3,11 +3,7 @@ import { TextInput, Text, View, StyleSheet, TouchableOpacity, Alert, Image, Moda
 import { colorOptions } from '../src/utils/colorFunctions';
 import Svg, { Path, Rect } from 'react-native-svg';
 import React, { useState, useEffect } from 'react';
-import * as ImagePicker from 'expo-image-picker';
-import * as MediaLibrary from 'expo-media-library';
-import * as FileSystem from 'expo-file-system';
 import { colors } from '../themes/colors';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocalSearchParams } from 'expo-router';
 import { useOneNote } from '../src/hooks/useOneNote';
 import { useNotes } from '../src/hooks/useNotes';
@@ -64,91 +60,7 @@ const NewNote = () => {
         getCameraPermission();
     }, []);
 
-    // Take photo functionality
-    const takePhoto = async () => {
-        const result = await ImagePicker.launchCameraAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
-
-        // console.log(result);
-        // If user took a picture
-        if (!result.canceled) {
-            // Update image state
-            setImageUri(result.assets[0].uri);
-            // Hide modal
-            setImageOptionsModalVisible(false)
-
-            // Set a filename for the uploaded image
-            const filename = 'image.jpg'; // Set a filename for the saved image
-            // Set the file uri for the uploaded image
-            const newFileUri = `${FileSystem.documentDirectory}${filename}`;
-
-            // Create a promise and show error if not fulfilled
-            try {
-                // Copy file and save
-                await FileSystem.copyAsync({
-                    from: result.uri, // Use result.uri as the source
-                    to: newFileUri,
-                });
-
-                // Set the selected image URI
-                setImageUri(result.assets[0].uri);
-
-                // Save image data using AsyncStorage
-                await AsyncStorage.setItem(newFileUri, result.uri);
-
-                console.log('Image saved successfully to', newFileUri);
-            } catch (error) {
-                console.error('Error saving image:', error);
-            }
-        }
-    };
-
-    // Choose picture from cameraroll functionality
-    const chooseFromCameraRoll = async () => {
-        const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
-
-        // If user uploaded image from camera roll
-        if (!result.canceled) {
-            // Update image state
-            setImageUri(result.assets[0].uri);
-            // Hide modal
-            setImageOptionsModalVisible(false)
-            // Set a filename for the uploaded image
-            const filename = 'image.jpg'; // Set a filename for the saved image
-            // Set the file uri for the uploaded image
-            const newFileUri = `${FileSystem.documentDirectory}${filename}`;
-
-            // Create a promise and show error if not fulfilled
-            try {
-                // Copy file and save
-                await FileSystem.copyAsync({
-                    from: result.uri, // Use result.uri as the source
-                    to: newFileUri,
-                });
-
-                // Set the selected image URI
-                setImageUri(result.assets[0].uri);
-
-                // Save image data using AsyncStorage
-                await AsyncStorage.setItem(newFileUri, result.uri);
-
-                console.log('Image saved successfully to', newFileUri);
-            } catch (error) {
-                console.error('Error saving image:', error);
-            }
-        }
-        // Hide modal
-        setImageOptionsModalVisible(false)
-    };
+    
 
     // Handle the saving functionality
     
@@ -242,10 +154,10 @@ const NewNote = () => {
                         <View style={styles.centeredModal}>
                             <View style={styles.imageOptionsModal}>
                                 <View style={styles.modalPictureOptionsContainer}>
-                                    <TouchableOpacity style={styles.modalChooseBtn} onPress={takePhoto}>
+                                    <TouchableOpacity style={styles.modalChooseBtn} onPress={() => takePhoto(setImageUri, setImageOptionsModalVisible)}>
                                         <Text style={styles.modalOptionText}>Take a Photo</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.modalChooseBtn} onPress={chooseFromCameraRoll}>
+                                    <TouchableOpacity style={styles.modalChooseBtn} onPress={() => chooseFromCameraRoll(setImageUri, setImageOptionsModalVisible)}>
                                         <Text style={styles.modalOptionText}>Choose from Camera Roll</Text>
                                     </TouchableOpacity>
 
