@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { updateNotesArray } from "../utils/asyncStorage";
 import { generateNewId } from "../utils/generateNewId";
+import { router } from 'expo-router';
 
 export const useNotes = () => {
     const [notes, setNotes] = useState([])
@@ -23,7 +24,7 @@ export const useNotes = () => {
     }, [])
 
     // Save note created or edited
-    const handleSaveNewNote = async (title, content, color, imageUri) => {
+    const handleSaveNote = async ( title, content, color, imageUri ) => {
 
         let newNotesArray;
 
@@ -36,8 +37,11 @@ export const useNotes = () => {
         };
 
         newNotesArray = [...notes, newNote];
+        console.log(newNotesArray);
 
         updateNotesArray(newNotesArray, setNotes)
+
+        router.back()
 
     }
 
@@ -163,5 +167,5 @@ export const useNotes = () => {
     //     }
     // };
 
-    return { notes, handleSaveNewNote, handleDeleteNote }
+    return { notes, handleSaveNote, handleDeleteNote }
 }

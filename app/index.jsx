@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         paddingTop: 30,
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        height: 'auto'
+        height: ''
     }
 })
 

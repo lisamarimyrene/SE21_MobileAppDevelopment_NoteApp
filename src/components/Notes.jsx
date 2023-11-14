@@ -17,22 +17,25 @@ export const Notes = ({ notes }) => {
         //     showsVerticalScrollIndicator={false}
         //     showsHorizontalScrollIndicator={false}
         // 
-            <View styles={styles.viewSection}>
-                <FlatList
-                    contentContainerStyle={styles.postitSection}
-                    scrollEnabled={true}
-                    data={notes}
-                    renderItem={(note) => 
-                        <PostIt 
-                            id={note.id}
-                            color={note.color}
-                            title={note.title}
-                            content={note.content}
-                            onEdit={() => toggleModal()} 
-                        />
-                    }
-                />
-            </View>
+        <View styles={styles.viewSection}>
+            <FlatList
+                contentContainerStyle={styles.postitSection}
+                scrollEnabled={true}
+                data={notes}
+                renderItem={({item}) => {
+                    return <PostIt
+                        id={item.id}
+                        color={item.color}
+                        title={item.title}
+                        content={item.content}
+                        onEdit={() => toggleModal()}
+
+                    />
+
+                }
+                }
+            />
+        </View>
         // </ScrollView>
     )
 }
@@ -53,7 +56,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Menlo'
     },
     viewSection: {
-        height: "90%",
+        height: 200,
         flexDirection: 'row',
         flexWrap: 'wrap', // Allow the PostIt components to wrap
         justifyContent: 'space-evenly',
