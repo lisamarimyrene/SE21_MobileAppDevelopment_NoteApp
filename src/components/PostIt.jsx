@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between',
         width: '48%',
-        height: 200,
+        height: 150,
         aspectRatio: 1,
         padding: 16,
         marginVertical: 7,

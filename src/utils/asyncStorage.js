@@ -9,6 +9,7 @@ export const updateNotesArray = (newNoteArray, setNotes) => {
 
         console.log('saved new notes')
         setNotes(newNoteArray);
+
     })
     .catch((error) => {
         console.error('Error saving notes to AsyncStorage: ', error);

@@ -24,10 +24,9 @@ const styles = StyleSheet.create({
         backgroundColor: colors.background,
         flex: 1,
         flexDirection: 'column',
-        paddingTop: 80,
-        paddingHorizontal: 12,
+        paddingTop: 30,
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
         height: 'auto'
     }
 })

@@ -38,7 +38,10 @@ export const Notes = ({ notes }) => {
 
 const styles = StyleSheet.create({
     scrollContainer: {
-        flex: 0.7,
+        height: "70%",
+        width: "90%",
+        borderWidth: 2,
+        borderColor: '#000'
     },
     placeholderTxtContainer: {
         justifyContent: 'center',
@@ -52,6 +55,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap', // Allow the PostIt components to wrap
         justifyContent: 'space-between',
-        padding: 5
+        padding: 5,
+        borderWidth: 2,
+        borderColor: '#000',
+        height: "100%"
     },
 })
