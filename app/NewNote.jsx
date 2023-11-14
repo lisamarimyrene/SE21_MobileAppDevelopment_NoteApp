@@ -14,7 +14,7 @@ const NewNote = () => {
     const { id } = useLocalSearchParams();
     console.log(`PARAM ID: ${id}`);
 
-    const { handleSaveNote, oneNote } = useNotes(id);
+    const { handleSaveNote, handleDeleteNote, oneNote } = useNotes(id);
     // const { oneNote } = useOneNote(id);
 
     // console.log('Id ', id);

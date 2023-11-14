@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
+import { Alert } from 'react-native'
 import { getAllNotes, updateNotesArray } from "../utils/asyncStorage";
 import { generateNewId } from "../utils/generateNewId";
 import { router } from 'expo-router';
 
 export const useNotes = () => {
     const [notes, setNotes] = useState([])
-    const [oneNote, setOneNote] = useState({})
 
     // Refresh notes data that are listening on the refreshTrigger state
     useEffect(() => {
@@ -47,5 +47,37 @@ export const useNotes = () => {
         }
     };
 
-    return { notes, oneNote, handleSaveNote };
+    // Delete note functionality
+    const handleDeleteNote = async (id) => {
+        Alert.alert(
+            'Confirm Delete',
+            'Are you sure you want to delete this note?',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+                {
+                    text: 'Delete',
+                    onPress: async () => {
+                        try {
+                            const updatedNotesArray = notes.filter((note) => note.id !== id);
+                            await updateNotesArray(updatedNotesArray);
+                            router.back();
+                        } catch (error) {
+                            console.error('Error deleting note: ', error);
+                        }
+                    },
+                    style: 'destructive',
+                },
+            ],
+            { cancelable: false }
+        );
+    }
+
+
+
+
+
+    return { notes, handleSaveNote, handleDeleteNote };
 }
