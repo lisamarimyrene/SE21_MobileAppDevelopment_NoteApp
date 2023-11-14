@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Update notes array saved in AsyncStorage
-export const updateNotesArray = async (newNoteArray) => {
+export const updateNotesFunction = async (newNoteArray) => {
     // Store the updated notes in AsyncStorage
     try {
         await AsyncStorage.setItem('notes', JSON.stringify(newNoteArray))

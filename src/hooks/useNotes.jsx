@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Alert } from 'react-native'
-import { getAllNotes, updateNotesArray } from "../utils/asyncStorage";
+import { getAllNotes, updateNotesFunction } from "../utils/asyncStorage";
 import { generateNewId } from "../utils/generateNewId";
 import { router } from 'expo-router';
 
@@ -40,7 +40,7 @@ export const useNotes = () => {
         }
 
         try {
-            await updateNotesArray(updatedNotesArray);
+            await updateNotesFunction(updatedNotesArray);
             router.back();
         } catch (error) {
             console.error('Error saving note: ', error);
@@ -62,7 +62,7 @@ export const useNotes = () => {
                     onPress: async () => {
                         try {
                             const updatedNotesArray = notes.filter((note) => note.id !== id);
-                            await updateNotesArray(updatedNotesArray);
+                            await updateNotesFunction(updatedNotesArray);
                             router.back();
                         } catch (error) {
                             console.error('Error deleting note: ', error);
