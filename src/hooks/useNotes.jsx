@@ -4,13 +4,7 @@ import { updateNotesArray } from "../utils/asyncStorage";
 import { generateNewId } from "../utils/generateNewId";
 
 export const useNotes = () => {
-    const [refreshTrigger, setRefreshTrigger] = useState(false)
     const [notes, setNotes] = useState([])
-
-    // Trigger refresh of data function
-    const triggerRefresh = () => {
-        setRefreshTrigger(!refreshTrigger)
-    }
 
     // Refresh notes data that are listening on the refreshTrigger state
     useEffect(() => {
@@ -26,26 +20,13 @@ export const useNotes = () => {
                 console.error('Error loading notes from AsyncStorage: ', error);
             });
 
-    }, [refreshTrigger])
+    }, [])
 
     // Save note created or edited
-    const handleSaveNewNote = (title, content, color, imageUri) => {
-        // let newNotesArray;
+    const handleSaveNewNote = async (title, content, color, imageUri) => {
 
-        // const noteIdExists = notes.filter((note) => {
-        //     if (noteToSave.id === note.id) return note
-        //     console.log(note);
-        // })
-        // console.log("noteExists", noteIdExists);
-
-        // if (noteIdExists.length) {
-        //     // If you are editing a note, update it in the existing notes
-        //     newNotesArray = notes.map((note) =>
-        //         note.id === noteToSave.id ? { ...note, ...noteToSave } : note
-        //     );
-        //     console.log("if", noteToSave.id);
         let newNotesArray;
-        
+
         const newNote = {
             id: generateNewId(),
             color: color,
@@ -57,26 +38,7 @@ export const useNotes = () => {
         newNotesArray = [...notes, newNote];
 
         updateNotesArray(newNotesArray, setNotes)
-        triggerRefresh()
 
-        //     // ? Remove
-        //     // Reset input fields to null
-        //     // setEditNote(null);
-        //     //! kommer ikke inn til elsen
-        // } else {
-        //     // If you are adding a new note, add it to the existing notes
-        //     noteToSave.id = getNewId();
-
-        //     const newNote = {
-        //         id: noteToSave.id,
-        //         color: color,
-        //         title: title,
-        //         content: content,
-        //         image: imageUri,
-        //     };
-
-        //     newNotesArray = [...notes, noteToSave];
-        //     console.log("else", noteToSave.id);
     }
 
     // const handleSave = async () => {
@@ -117,7 +79,7 @@ export const useNotes = () => {
         // );
 
         newNotesArray = notes.filter((note) => {
-            if(note.id !== noteToDelete.id) {
+            if (note.id !== noteToDelete.id) {
                 return note
             }
         })
@@ -129,13 +91,12 @@ export const useNotes = () => {
             .then(() => {
                 // Dismiss the editing view
                 overwriteNotes(newNotesArray)
-                triggerRefresh()
                 toggleModal(false)
             })
             .catch((error) => {
                 console.error('Error saving notes to AsyncStorage: ', error);
             });
-            
+
     }
 
     // // Handle the cancel action with a confirmation dialog

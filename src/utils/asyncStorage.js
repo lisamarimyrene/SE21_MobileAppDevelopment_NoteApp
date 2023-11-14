@@ -1,9 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const updateNotesArray = (newNoteArray, setNotes) => {
+export const updateNotesArray = async (newNoteArray, setNotes) => {
 
     // Store the updated notes in AsyncStorage
-    AsyncStorage.setItem('notes', JSON.stringify(newNoteArray))
+    await AsyncStorage.setItem('notes', JSON.stringify(newNoteArray))
     .then(() => {
         // todo: create toggle modal
 

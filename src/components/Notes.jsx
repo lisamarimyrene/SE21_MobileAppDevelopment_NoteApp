@@ -1,4 +1,4 @@
-import { SafeAreaView, View, Text, StyleSheet, FlatList } from "react-native"
+import { ScrollView, View, Text, StyleSheet, FlatList } from "react-native"
 import { colors } from "../../themes/colors"
 import { PostIt } from "./PostIt"
 
@@ -11,15 +11,16 @@ export const Notes = ({ notes }) => {
             </View>
         )
     }
-    console.log('Notes: ', notes);
 
     return (
-        <SafeAreaView style={styles.scrollContainer}
-            showsVerticalScrollIndicator={false}
-            showsHorizontalScrollIndicator={false}
-        >
-            <View style={styles.postitSection}>
+        // <ScrollView style={styles.scrollContainer}
+        //     showsVerticalScrollIndicator={false}
+        //     showsHorizontalScrollIndicator={false}
+        // 
+            <View styles={styles.viewSection}>
                 <FlatList
+                    contentContainerStyle={styles.postitSection}
+                    scrollEnabled={true}
                     data={notes}
                     renderItem={(note) => 
                         <PostIt 
@@ -32,17 +33,17 @@ export const Notes = ({ notes }) => {
                     }
                 />
             </View>
-        </SafeAreaView>
+        // </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
-    scrollContainer: {
-        height: "70%",
-        width: "90%",
-        borderWidth: 2,
-        borderColor: '#000'
-    },
+    // scrollContainer: {
+    //     height: "70%",
+    //     width: "90%",
+    //     borderWidth: 2,
+    //     borderColor: '#000'
+    // },
     placeholderTxtContainer: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -51,13 +52,16 @@ const styles = StyleSheet.create({
         color: colors.text,
         fontFamily: 'Menlo'
     },
-    postitSection: {
+    viewSection: {
+        height: "90%",
         flexDirection: 'row',
         flexWrap: 'wrap', // Allow the PostIt components to wrap
-        justifyContent: 'space-between',
-        padding: 5,
+        justifyContent: 'space-evenly',
+    },
+    postitSection: {
+        width: '100%',
+        paddingVertical: 20,
         borderWidth: 2,
         borderColor: '#000',
-        height: "100%"
     },
 })

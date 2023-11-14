@@ -9,8 +9,6 @@ import "expo-router/entry";
 const Index = () => {
     const { notes } = useNotes()
 
-    console.log('Index: ', notes);
-
     return (
         <View style={styles.main}>
             <Notes notes={notes} />
