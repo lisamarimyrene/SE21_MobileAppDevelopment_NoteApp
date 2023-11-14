@@ -5,25 +5,25 @@ import Svg, { Path, Rect } from 'react-native-svg';
 import React, { useState, useEffect } from 'react';
 import { colors } from '../themes/colors';
 import { useLocalSearchParams } from 'expo-router';
-import { useOneNote } from '../src/hooks/useOneNote';
+// import { useOneNote } from '../src/hooks/useOneNote';
 import { useNotes } from '../src/hooks/useNotes';
 import { getCameraPermission, getCameraRollPermission } from '../src/utils/getPermissions';
 
 
 const NewNote = () => {
     const { id } = useLocalSearchParams();
-    // console.log(`PARAM ID: ${id}`);
+    console.log(`PARAM ID: ${id}`);
 
-    const { handleSaveNote } = useNotes();
-    const { oneNote, handleDeleteNote} = useOneNote(id);
+    const { handleSaveNote, oneNote } = useNotes(id);
+    // const { oneNote } = useOneNote(id);
 
     // console.log('Id ', id);
     // console.log('oneNote ', oneNote);
 
     // Set states, and populate fields if note exists (compares)
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
-    const [color, setColor] = useState('blue');
+    const [title, setTitle] = useState(oneNote?.title || '');
+    const [content, setContent] = useState(oneNote?.content || '');
+    const [color, setColor] = useState(oneNote?.color || 'blue');
 
 
     const [imageUri, setImageUri] = useState(null);
@@ -45,7 +45,7 @@ const NewNote = () => {
         }
         // console.log(title);
 
-        handleSaveNote(title, content, color, imageUri)
+        handleSaveNote(id, title, content, color, imageUri)
 
     }
 
