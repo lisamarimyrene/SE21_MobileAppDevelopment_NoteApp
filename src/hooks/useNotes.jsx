@@ -34,43 +34,6 @@ export const useNotes = () => {
 
     }
 
-    // Delete selected note
-    const handleDeleteNote = (id) => {
-        let newNotesArray;
-        let noteToDelete;// Må finne notatet jeg klikker på
-
-        newNotesArray = notes.filter((note) => {
-            if (note.id === noteToDelete.id) {
-                return note
-            }
-        })
-
-        Alert.alert(
-            'Confirm Delete',
-            'Are you sure you want to delete this note?',
-            [
-                {
-                    text: 'Cancel',
-                    style: 'cancel',
-                },
-                {
-                    text: 'Delete',
-                    onPress: () => {
-                        onCancel(true);
-                        router.back()
-                    },
-                },
-            ],
-            { cancelable: false }
-        );
-
-        newNotesArray = [...notes, newNote];
-        console.log(newNotesArray);
-
-        updateNotesArray(newNotesArray, setNotes)
-
-
-    }
 
     // // Handle the cancel action with a confirmation dialog
     // const handleCancel = () => {
@@ -136,5 +99,5 @@ export const useNotes = () => {
     //     }
     // };
 
-    return { notes, handleSaveNote, handleDeleteNote }
+    return { notes, handleSaveNote }
 }
