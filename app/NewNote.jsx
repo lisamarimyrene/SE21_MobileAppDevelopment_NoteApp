@@ -11,15 +11,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocalSearchParams } from 'expo-router';
 import { useOneNote } from '../src/hooks/useOneNote';
 import { useNotes } from '../src/hooks/useNotes';
+import { getCameraPermission, getCameraRollPermission } from '../src/utils/getPermissions';
 
 
-const NewNote = ({ editNote }) => {
+const NewNote = () => {
     const { id } = useLocalSearchParams();
+    console.log(`PARAM ID: ${id}`);
 
-    // const { oneNote } = useOneNote(id);
-
-    const {handleSaveNote} = useNotes();
-    const {handleDeleteNote}= useOneNote();
+    const { handleSaveNote } = useNotes();
+    const { oneNote, handleDeleteNote} = useOneNote(id);
 
     // console.log('Id ', id);
     // console.log('oneNote ', oneNote);
@@ -30,7 +30,7 @@ const NewNote = ({ editNote }) => {
     const [color, setColor] = useState('blue');
 
 
-    const [imageUri, setImageUri] = useState(editNote ? editNote.image : null);
+    const [imageUri, setImageUri] = useState(null);
     const [isImageOptionsModalVisible, setImageOptionsModalVisible] = useState(false); // To show/hide modal
 
     const handleSubmit = () => {
@@ -53,26 +53,9 @@ const NewNote = ({ editNote }) => {
 
     }
 
-
     // Handle color change of the post-it note
     const handleColorChange = (color) => {
         setColor(color);
-    };
-
-    // Get media library permission
-    const getCameraRollPermission = async () => {
-        const { status } = await MediaLibrary.requestPermissionsAsync();
-        if (status !== 'granted') {
-            alert('Permission to access camera roll is required!');
-        }
-    };
-
-    // Get camera permission
-    const getCameraPermission = async () => {
-        const { status } = await ImagePicker.requestCameraPermissionsAsync();
-        if (status !== 'granted') {
-            alert('Permission to access the camera is required!');
-        }
     };
 
     // Update persmission

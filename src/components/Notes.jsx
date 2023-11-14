@@ -28,11 +28,7 @@ export const Notes = ({ notes }) => {
                         color={item.color}
                         title={item.title}
                         content={item.content}
-                        onEdit={() => toggleModal()}
-
-                    />
-
-                }
+                    />}
                 }
             />
         </View>

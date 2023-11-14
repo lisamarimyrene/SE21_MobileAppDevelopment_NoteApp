@@ -16,7 +16,7 @@ export const updateNotesArray = async (newNoteArray, setNotes) => {
 // Get all notes saved in AsyncStorage
 export const getAllNotes = async (setNotes) => {
 
-    AsyncStorage.getItem('notes')
+    await AsyncStorage.getItem('notes')
         .then(savedNotes => {
             if (savedNotes) {
                 const parsedNotes = JSON.parse(savedNotes);
