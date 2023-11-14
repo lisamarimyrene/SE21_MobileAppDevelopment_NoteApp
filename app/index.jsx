@@ -1,35 +1,20 @@
-import { View, StyleSheet, Text } from 'react-native'
-import { NewNote } from './NewNote';
+import { View, StyleSheet } from 'react-native'
 import { colors } from '../themes/colors'
-import { useEffect, useState } from 'react';
 import { Notes } from '../src/components/Notes';
 import { NewNoteButton } from '../src/components/NewNoteButton';
 import { useNotes } from '../src/hooks/useNotes';
-import { getNewId } from '../src/utils/getId'
-import { useModal } from '../src/hooks/useModal'
+import "expo-router/entry";
 
 
 const Index = () => {
-    // const [showNewNote, setShowNewNote] = useState(false);
-    const [editNote, setEditNote] = useState(null);
-    const { notes, handleSaveNote, handleDeleteNote } = useNotes()
-    const { showModal, toggleModal } = useModal()
+    const { notes } = useNotes()
 
-    // // Handle the edit of an exisiting note
-    // const toggleEditNoteModal = (note) => {
-    //     setEditNote(note);
-    //     setShowNewNote(true);
-    // };
+    console.log('Index: ', notes);
 
     return (
         <View style={styles.main}>
             <Notes notes={notes} />
-
-            {showModal ? (
-                <NewNote animationType="slide" onSave={handleSaveNote} onCancel={handleDeleteNote} noteId={getNewId} editNote={editNote} />
-            ) : (
-                <NewNoteButton toggleFunction={toggleModal} />
-            )}
+            <NewNoteButton/>
         </View>
     )
 }

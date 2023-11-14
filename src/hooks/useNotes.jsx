@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react"
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { overwriteNotes } from "../utils/asyncStorage";
-import { getNewId } from "../utils/getId";
-import { useModal } from "./useModal";
+import { updateNotesArray } from "../utils/asyncStorage";
+import { generateNewId } from "../utils/generateNewId";
 
 export const useNotes = () => {
     const [refreshTrigger, setRefreshTrigger] = useState(false)
     const [notes, setNotes] = useState([])
-    const { toggleModal } = useModal()
 
     // Trigger refresh of data function
     const triggerRefresh = () => {
@@ -31,37 +29,84 @@ export const useNotes = () => {
     }, [refreshTrigger])
 
     // Save note created or edited
-    const handleSaveNote = (noteToSave) => {
+    const handleSaveNewNote = (title, content, color, imageUri) => {
+        // let newNotesArray;
+
+        // const noteIdExists = notes.filter((note) => {
+        //     if (noteToSave.id === note.id) return note
+        //     console.log(note);
+        // })
+        // console.log("noteExists", noteIdExists);
+
+        // if (noteIdExists.length) {
+        //     // If you are editing a note, update it in the existing notes
+        //     newNotesArray = notes.map((note) =>
+        //         note.id === noteToSave.id ? { ...note, ...noteToSave } : note
+        //     );
+        //     console.log("if", noteToSave.id);
         let newNotesArray;
+        
+        const newNote = {
+            id: generateNewId(),
+            color: color,
+            title: title,
+            content: content,
+            image: imageUri,
+        };
 
-        const noteIdExists = notes.filter((note) => {
-            if (noteToSave.id === note.id) return note
-            console.log(note);
-        })
-        console.log("noteExists", noteIdExists);
+        newNotesArray = [...notes, newNote];
 
-        if (noteIdExists.length) {
-            // If you are editing a note, update it in the existing notes
-            newNotesArray = notes.map((note) =>
-                note.id === noteToSave.id ? { ...note, ...noteToSave } : note
-            );
-            console.log("if", noteToSave.id);
-
-
-            // ? Remove
-            // Reset input fields to null
-            // setEditNote(null);
-            //! kommer ikke inn til elsen
-        } else {
-            // If you are adding a new note, add it to the existing notes
-            noteToSave.id = getNewId();
-            newNotesArray = [...notes, noteToSave];
-            console.log("else", noteToSave.id);
-        }
-
-        overwriteNotes(newNotesArray)
+        updateNotesArray(newNotesArray, setNotes)
         triggerRefresh()
-    };
+
+        //     // ? Remove
+        //     // Reset input fields to null
+        //     // setEditNote(null);
+        //     //! kommer ikke inn til elsen
+        // } else {
+        //     // If you are adding a new note, add it to the existing notes
+        //     noteToSave.id = getNewId();
+
+        //     const newNote = {
+        //         id: noteToSave.id,
+        //         color: color,
+        //         title: title,
+        //         content: content,
+        //         image: imageUri,
+        //     };
+
+        //     newNotesArray = [...notes, noteToSave];
+        //     console.log("else", noteToSave.id);
+    }
+
+    // const handleSave = async () => {
+    //     if (title || content) {
+    //         const newNote = {
+    //             id: {id},
+    //             color: color,
+    //             title: title,
+    //             content: content,
+    //             image: imageUri,
+    //         };
+
+    //         handleCancel();
+
+    //     }
+    //     else {
+    //         Alert.alert(
+    //             'Did you mean to save?',
+    //             'Please enter some input or delete the note.',
+    //             [
+    //                 {
+    //                     text: 'OK',
+    //                 },
+    //             ],
+    //             { cancelable: true }
+    //         );
+    //     }
+    // };
+
+
 
     // Handle delete note
     const handleDeleteNote = (noteToDelete) => {
@@ -92,6 +137,36 @@ export const useNotes = () => {
             });
             
     }
+
+    // // Handle the cancel action with a confirmation dialog
+    // const handleCancel = () => {
+    //     // If the note has title or content, give alert.
+    //     if (title || content) {
+    //         Alert.alert(
+    //             'Confirm Delete',
+    //             'Are you sure you want to delete this note?',
+    //             [
+    //                 {
+    //                     text: 'Cancel',
+    //                     style: 'cancel',
+    //                 },
+    //                 {
+    //                     text: 'Delete',
+    //                     onPress: () => {
+    //                         onCancel(true);
+    //                     },
+    //                 },
+    //             ],
+    //             { cancelable: false }
+    //         );
+    //         // If the note doesnt have title or content, just close window.
+    //     } else if (!title || !content) {
+    //         onCancel(true);
+    //         // Else, don't close window. 
+    //     } else {
+    //         onCancel(false);
+    //     }
+    // };
 
 
     //     if (isDelete) {
@@ -127,5 +202,5 @@ export const useNotes = () => {
     //     }
     // };
 
-    return { notes, handleSaveNote, handleDeleteNote }
+    return { notes, handleSaveNewNote, handleDeleteNote }
 }

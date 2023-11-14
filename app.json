@@ -11,14 +11,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "scheme": "app/Index.jsx",
+    "scheme": "noteapp-reactnative",
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "This app uses the camera to scan barcodes on event tickets."
+        "NSCameraUsageDescription": "This app uses the camera to add images to your notes."
       }
     },
     "android": {

@@ -1,10 +1,8 @@
-import { ScrollView, View, Text, StyleSheet } from "react-native"
+import { SafeAreaView, View, Text, StyleSheet, FlatList } from "react-native"
 import { colors } from "../../themes/colors"
-import { useModal } from "../hooks/useModal"
 import { PostIt } from "./PostIt"
 
-export const Notes = ({ notes, handleEditNote }) => {
-    const { toggleModal } = useModal()
+export const Notes = ({ notes }) => {
 
     if (!notes.length) {
         return (
@@ -13,25 +11,28 @@ export const Notes = ({ notes, handleEditNote }) => {
             </View>
         )
     }
+    console.log('Notes: ', notes);
 
     return (
-        <ScrollView style={styles.scrollContainer}
+        <SafeAreaView style={styles.scrollContainer}
             showsVerticalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
         >
             <View style={styles.postitSection}>
-                {/* Endre til flatlist */}
-                {notes.map((note) => (
-                    <PostIt
-                        key={note.id}
-                        color={note.color}
-                        title={note.title}
-                        content={note.content}
-                        onEdit={() => toggleModal()}
-                    />
-                ))}
+                <FlatList
+                    data={notes}
+                    renderItem={(note) => 
+                        <PostIt 
+                            id={note.id}
+                            color={note.color}
+                            title={note.title}
+                            content={note.content}
+                            onEdit={() => toggleModal()} 
+                        />
+                    }
+                />
             </View>
-        </ScrollView>
+        </SafeAreaView>
     )
 }
 
