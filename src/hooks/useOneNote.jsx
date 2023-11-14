@@ -1,29 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
+import { getAllNotes } from '../utils/asyncStorage';
 
 export const useOneNote = (id) => {
-    const [allNotes, setAllNotes] = useState([])
+    const [notes, setNotes] = useState([])
     const [oneNote, setOneNote] = useState({})
 
 
-    const findAllNotes = () => {
-        AsyncStorage.getItem('notes')
-            .then(savedNotes => {
-                if (savedNotes) {
-                    const parsedNotes = JSON.parse(savedNotes);
-                    setAllNotes(parsedNotes)
-                    console.log("parsed", parsedNotes);
-                
-                }
-            })
-            // Error message in case it's not able to load notes
-            .catch(error => {
-                console.error('Error loading notes from AsyncStorage: ', error);
-            });
-    }
+    getAllNotes(setNotes)
 
     
-    const findOneNote = allNotes.filter((note) => {
+    const findOneNote = notes.filter((note) => {
         if (id === note.id) return note
     })
 
@@ -32,7 +19,7 @@ export const useOneNote = (id) => {
         if (!id) return 
 
         findAllNotes()
-        console.log('all notes ', allNotes);
+        console.log('all notes ', notes);
         setOneNote(findOneNote())
     }, [id])
 
