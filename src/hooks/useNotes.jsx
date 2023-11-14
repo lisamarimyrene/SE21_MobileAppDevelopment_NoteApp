@@ -16,15 +16,6 @@ export const useNotes = () => {
         loadNotes();
     }, [])
 
-    // Find a single note by ID
-    const findOneNote = (id) => {
-        const foundNote = notes.find((note) => note.id === id);
-        console.log("foundNote", foundNote);
-        if (foundNote) {
-            setOneNote(foundNote);
-        }
-    };
-
     // Save note created or edited
     const handleSaveNote = async (id, title, content, color, imageUri) => {
         let updatedNotesArray;
@@ -56,5 +47,5 @@ export const useNotes = () => {
         }
     };
 
-    return { notes, oneNote, handleSaveNote, findOneNote };
+    return { notes, oneNote, handleSaveNote };
 }
