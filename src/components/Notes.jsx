@@ -4,7 +4,7 @@ import { PostIt } from "./PostIt"
 
 export const Notes = ({ notes }) => {
 
-    if (!notes.length) {
+    if (!notes) {
         return (
             <View style={styles.placeholderTxtContainer}>
                 <Text style={styles.placeholderTxt}>Click the + button to create new note</Text>

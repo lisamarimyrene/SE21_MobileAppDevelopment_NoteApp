@@ -8,14 +8,17 @@ export const useNotes = () => {
 
     // Refresh notes data that are listening on the refreshTrigger state
     useEffect(() => {
-        getAllNotes(setNotes);
+        const loadNotes = async () => {
+            const loadedNotes = await getAllNotes();
+            setNotes(loadedNotes);
+        };
+        loadNotes();
     }, [])
 
+
     // Save note created or edited
-    const handleSaveNote = (title, content, color, imageUri) => {
-
-        let newNotesArray;
-
+    const handleSaveNote = async (title, content, color, imageUri) => {
+        
         const newNote = {
             id: generateNewId(),
             color: color,
@@ -24,13 +27,14 @@ export const useNotes = () => {
             image: imageUri,
         };
 
-        newNotesArray = [...notes, newNote];
-        console.log(newNotesArray);
+        const updatedNotes = notes ? [...notes, newNote] : [newNote];
 
-        updateNotesArray(newNotesArray, setNotes)
-
-        router.back()
-
+        try {
+            await updateNotesArray(updatedNotes);
+            router.back();
+        } catch (error) {
+            console.error('Error saving note: ', error);
+        }
     }
 
     return { notes, handleSaveNote }

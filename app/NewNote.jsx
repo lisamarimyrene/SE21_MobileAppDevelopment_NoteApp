@@ -12,7 +12,7 @@ import { getCameraPermission, getCameraRollPermission } from '../src/utils/getPe
 
 const NewNote = () => {
     const { id } = useLocalSearchParams();
-    console.log(`PARAM ID: ${id}`);
+    // console.log(`PARAM ID: ${id}`);
 
     const { handleSaveNote } = useNotes();
     const { oneNote, handleDeleteNote} = useOneNote(id);
@@ -43,7 +43,7 @@ const NewNote = () => {
             );
             return
         }
-        console.log(title);
+        // console.log(title);
 
         handleSaveNote(title, content, color, imageUri)
 
@@ -59,11 +59,6 @@ const NewNote = () => {
         getCameraRollPermission();
         getCameraPermission();
     }, []);
-
-    
-
-    // Handle the saving functionality
-    
 
 
     return (
