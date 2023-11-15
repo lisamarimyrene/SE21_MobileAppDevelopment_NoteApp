@@ -19,7 +19,7 @@ export const NewNoteButton = () => {
 
 const styles = StyleSheet.create({
     buttonContainer: {
-        width: "100%",
+        width: "fit",
         height: "18%",
         justifyContent: "center",
         alignItems: "center",
