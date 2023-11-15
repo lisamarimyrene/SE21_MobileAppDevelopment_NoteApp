@@ -12,6 +12,7 @@ export const mediaFunctionaliy = async (launchOption, setImageUri, setImageOptio
 
     if (!result.canceled) {
         // Update image state
+        // returner heller resultatet
         setImageUri(result.assets[0].uri);
         // Hide modal
         setImageOptionsModalVisible(false)
