@@ -8,7 +8,7 @@ const NoteContext = createContext(null);
 // Bruker en provider når du trenger tilgang til samme statesene globalt
 const NoteProvider = ( children ) => {
 
-    //! Need to figureout the states
+    //? Need to figureout the states
     const { id } = useLocalSearchParams();
     const { oneNote } = useNotes(id);
 
@@ -16,7 +16,7 @@ const NoteProvider = ( children ) => {
     const [content, setContent] = useState(oneNote?.content || "");
     const [imageUri, setImageUri] = useState(oneNote?.imageUri || null);
     const [color, setColor] = useState(oneNote?.color || "yellow");
-    const [isImageOptionsModalVisible, setImageOptionsModalVisible] = useState(false); // To show/hide modal
+    const [mediaModalVisible, setMediaModalVisible] = useState(false);
 
     // Wrap the context around all children (App)
     return (
@@ -27,7 +27,7 @@ const NoteProvider = ( children ) => {
                 content, setContent,
                 imageUri, setImageUri,
                 color, setColor,
-                isImageOptionsModalVisible, setImageOptionsModalVisible,
+                mediaModalVisible, setMediaModalVisible,
             }}>
             {children}
         </NoteContext.Provider>

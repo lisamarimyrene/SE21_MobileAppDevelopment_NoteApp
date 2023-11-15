@@ -6,7 +6,7 @@ import { mediaFunctionaliy } from "../../utils/mediaFunctionality";
 import * as ImagePicker from "expo-image-picker";
 
 export const MediaModal = () => {
-    const { isImageOptionsModalVisible, setImageOptionsModalVisible  } = useContext(NoteContext);
+    const { mediaModalVisible, setMediaModalVisible  } = useContext(NoteContext);
 
     const launchCameraAsync = ImagePicker.launchCameraAsync;
     const launchImageLibraryAsync = ImagePicker.launchImageLibraryAsync;
@@ -14,12 +14,12 @@ export const MediaModal = () => {
     return (
         <View style={styles.modalContainer}>
             <Modal
-                visible={isImageOptionsModalVisible}
+                visible={mediaModalVisible}
                 transparent={true}
                 animationType="slide"
                 onRequestClose={() => {
                     Alert.alert("Modal has been closed.");
-                    setImageOptionsModalVisible(!isImageOptionsModalVisible);
+                    setImageOptionsModalVisible(!mediaModalVisible);
                 }}>
 
                 <View style={styles.centeredModal}>
