@@ -1,9 +1,13 @@
 import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { useContext } from 'react';
 import Svg, { Path } from 'react-native-svg';
 import { useNotes } from "../../hooks/useNotes";
+import { NoteContext } from '../../context/useContext';
 
-export const SaveDeleteSection = (id, title, content, color, imageUri) => {
+export const SaveDeleteSection = (id) => {
+    const { title, content, color, imageUri } = useContext(NoteContext)
     const { handleSaveNote, handleDeleteNote } = useNotes(id);
+
 
     const handleSubmit = () => {
         if (!title && !content) {

@@ -1,15 +1,14 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useState } from 'react';
 
 const NoteContext = createContext(null);
 
+// Bruker en provider når du trenger tilgang til samme statesene globalt
 const NoteProvider = ({ children }) => {
     const [title, setTitle] = useState(existingNoteObject?.title || '');
     const [content, setContent] = useState(existingNoteObject?.content || '');
     const [imageUri, setImageUri] = useState(existingNoteObject?.imageUri || null);
     const [color, setColor] = useState(existingNoteObject?.color || 'blue');
     const [isImageOptionsModalVisible, setImageOptionsModalVisible] = useState(false); // To show/hide modal
-
-
 
     // Wrap the context around all children (App)
     return (

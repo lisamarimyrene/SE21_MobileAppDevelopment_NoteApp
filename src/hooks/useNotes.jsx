@@ -4,6 +4,7 @@ import { getAllNotes, updateNotesFunction } from "../utils/asyncStorage";
 import { generateNewId } from "../utils/generateNewId";
 import { router } from 'expo-router';
 
+// Bruker en hook når du har en state og en effect samtidig, der du lytter på hva brukeren gjør
 export const useNotes = () => {
     const [notes, setNotes] = useState([])
 

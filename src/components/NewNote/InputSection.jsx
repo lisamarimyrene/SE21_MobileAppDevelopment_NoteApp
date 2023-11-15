@@ -1,11 +1,11 @@
 import { ScrollView, TextInput, Image, StyleSheet } from 'react-native'
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { NoteContext } from '../../context/useContext';
 
 export const InputSection = () => {
-    
-    const [title, setTitle] = useState(existingNoteObject?.title || '');
-    const [content, setContent] = useState(existingNoteObject?.content || '');
-    const [imageUri, setImageUri] = useState(existingNoteObject?.imageUri || null);
+
+    // Get loggedIn accessToken, and player states.
+    const { title, setTitle, content, setContent, imageUri  } = useContext(NoteContext)
 
     return (
         <ScrollView style={styles.inputSection}

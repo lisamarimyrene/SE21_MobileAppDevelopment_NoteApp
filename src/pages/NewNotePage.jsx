@@ -1,6 +1,6 @@
-import { TextInput, Text, View, StyleSheet, TouchableOpacity, Alert, Image, Modal, ScrollView } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, Alert, Modal } from 'react-native'
 import Svg, { Path, Rect } from 'react-native-svg';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 // Utils & Hooks
 import { colors } from '../themes/colors';
@@ -26,11 +26,6 @@ export const NewNotePage = () => {
     const existingNoteObject = notes.find((note) => note.id === id) ;
     console.log('Existing Note Object:', existingNoteObject);
     // console.log('Existing title:', existingNoteObject.title);
-   
-    // Set states, and populate fields if note exists (compares)
-    const [color, setColor] = useState(existingNoteObject?.color || 'blue');
-
-    const [isImageOptionsModalVisible, setImageOptionsModalVisible] = useState(false); // To show/hide modal
 
     // Handle color change of the post-it note
     const handleColorChange = (color) => {
@@ -47,9 +42,9 @@ export const NewNotePage = () => {
     return (
             <View style={styles.newNoteContainer}>
                 
-                <SaveDeleteSection id={id} title={title} content={content} color={color} imageUri={imageUri}/>
+                <SaveDeleteSection id={id}/>
 
-                <InputSection imageUri={imageUri}/>
+                <InputSection/>
 
                 {/* ---- Choose color and image section ---- */}
                 <View style={styles.optionsContainer}>
