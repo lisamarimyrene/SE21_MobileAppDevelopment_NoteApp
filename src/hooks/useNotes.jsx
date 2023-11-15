@@ -5,8 +5,9 @@ import { generateNewId } from "../utils/generateNewId";
 import { router } from 'expo-router';
 
 // Bruker en hook når du har en state og en effect samtidig, der du lytter på hva brukeren gjør
-export const useNotes = () => {
+export const useNotes = (id) => {
     const [notes, setNotes] = useState([])
+    const [oneNote, setOneNote] = useState({})
 
     // Refresh notes data that are listening on the refreshTrigger state
     useEffect(() => {
@@ -15,7 +16,14 @@ export const useNotes = () => {
             setNotes(loadedNotes);
         };
         loadNotes();
-    }, [])
+    }, [notes])
+
+
+    useEffect(() => {
+        const existingNoteObject = notes.find((note) => note.id === id);
+        setOneNote(existingNoteObject);
+    }, [id, notes]);
+
 
     // Save note created or edited
     const handleSaveNote = async (id, title, content, color, imageUri) => {
@@ -81,5 +89,5 @@ export const useNotes = () => {
         );
     }
 
-    return { notes, handleSaveNote, handleDeleteNote };
+    return { notes, oneNote, handleSaveNote, handleDeleteNote };
 }

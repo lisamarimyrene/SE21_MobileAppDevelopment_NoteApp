@@ -1,10 +1,21 @@
 import { ScrollView, TextInput, Image, StyleSheet } from 'react-native'
-import { useState, useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { NoteContext } from '../../context/useContext';
+import { useNotes } from '../../hooks/useNotes';
 
 export const InputSection = () => {
+    const { title, content, imageUri, handleTitleChange, handleContentChange, setContent, setImageUri, setTitle  } = useContext(NoteContext)
+    const { oneNote } = useNotes()
 
-    const { title, setTitle, content, setContent, imageUri  } = useContext(NoteContext)
+    useEffect(() => {
+        // Assuming oneNote holds the fetched note data
+        if (oneNote) {
+            setTitle(oneNote.title || '');
+            setContent(oneNote.content || '');
+            setImageUri(oneNote.imageUri || null);
+            // Update other context values as needed
+        }
+    }, [oneNote]);
 
     return (
         <ScrollView style={styles.inputSection}
@@ -16,14 +27,14 @@ export const InputSection = () => {
                 placeholder="Title"
                 value={title}
                 multiline={true}
-                onChangeText={text => setTitle(text)}
+                onChangeText={handleTitleChange}
             />
             <TextInput
                 style={styles.contentInput}
                 placeholder="What's on your mind?"
                 value={content}
                 multiline={true}
-                onChangeText={text => setContent(text)}
+                onChangeText={handleContentChange}
             />
             {imageUri && (
                 <Image

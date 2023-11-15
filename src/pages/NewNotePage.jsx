@@ -11,18 +11,7 @@ import { InputSection } from '../components/NewNote/InputSection';
 import { OptionsSection } from '../components/NewNote/OptionsSection';
 import { MediaModal } from '../components/NewNote/MediaModal';
 
-// Libraries
-import { useLocalSearchParams } from 'expo-router';
-
-
 export const NewNotePage = () => {
-    const { id } = useLocalSearchParams();
-    console.log(`PARAM ID: ${id}`);
-    const { notes } = useNotes(id);
-
-    const existingNoteObject = notes.find((note) => note.id === id) ;
-    console.log('Existing Note Object:', existingNoteObject);
-    // console.log('Existing title:', existingNoteObject.title);
 
     // Update persmission
     useEffect(() => {
@@ -30,10 +19,9 @@ export const NewNotePage = () => {
         getCameraPermission();
     }, []);
 
-
     return (
             <View style={styles.newNoteContainer}>
-                <SaveDeleteSection id={id}/>
+                <SaveDeleteSection/>
                 <InputSection/>
                 <OptionsSection />
                 <MediaModal />
