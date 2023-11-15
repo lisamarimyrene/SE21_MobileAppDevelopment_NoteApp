@@ -6,7 +6,7 @@ import { mediaFunctionaliy } from "../../utils/mediaFunctionality";
 import * as ImagePicker from "expo-image-picker";
 
 export const MediaModal = () => {
-    const { mediaModalVisible, setMedaModalVisible  } = useContext(NoteContext);
+    const { mediaModalVisible, setMediaModalVisible, setImageUri } = useContext(NoteContext);
 
     const launchCameraAsync = ImagePicker.launchCameraAsync;
     const launchImageLibraryAsync = ImagePicker.launchImageLibraryAsync;
@@ -19,22 +19,22 @@ export const MediaModal = () => {
                 animationType="slide"
                 onRequestClose={() => {
                     Alert.alert("Modal has been closed.");
-                    setMedaModalVisible(!mediaModalVisible);
+                    setMediaModalVisible(!mediaModalVisible);
                 }}>
 
                 <View style={styles.centeredModal}>
                     <View style={styles.imageOptionsModal}>
                         <View style={styles.modalPictureOptionsContainer}>
-                            <TouchableOpacity style={styles.modalChooseBtn} onPress={() => mediaFunctionaliy(launchCameraAsync)}>
+                            <TouchableOpacity style={styles.modalChooseBtn} onPress={() => mediaFunctionaliy(launchCameraAsync, setImageUri, setMediaModalVisible)}>
                                 <Text style={styles.modalOptionText}>Take a Photo</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.modalChooseBtn} onPress={() => mediaFunctionaliy(launchImageLibraryAsync)}>
+                            <TouchableOpacity style={styles.modalChooseBtn} onPress={() => mediaFunctionaliy(launchImageLibraryAsync, setImageUri, setMediaModalVisible)}>
                                 <Text style={styles.modalOptionText}>Choose from Camera Roll</Text>
                             </TouchableOpacity>
 
                         </View>
-                        <TouchableOpacity style={styles.modalCancelBtn} onPress={() => setMedaModalVisible(false)}>
+                        <TouchableOpacity style={styles.modalCancelBtn} onPress={() => setMediaModalVisible(false)}>
                             <Text style={styles.modalOptionText}>Cancel</Text>
                         </TouchableOpacity>
                     </View>

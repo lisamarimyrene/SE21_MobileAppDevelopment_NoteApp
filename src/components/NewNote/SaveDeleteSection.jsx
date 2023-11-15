@@ -9,7 +9,6 @@ export const SaveDeleteSection = () => {
     const { id, title, content, color, imageUri } = useContext(NoteContext);
     const { handleSaveNote, handleDeleteNote } = useNotes(id);
 
-
     const handleSubmit = () => {
         if (!title && !content) {
             Alert.alert(

@@ -7,10 +7,7 @@ const NoteContext = createContext(null);
 
 // Bruker en provider når du trenger tilgang til samme statesene globalt
 const NoteProvider = ({ children }) => {
-
-    //? Need to figureout the states
     const { id } = useLocalSearchParams();
-    console.log("ID", id);
     const { notes } = useNotes(id);
 
     const [title, setTitle] = useState("");
@@ -19,11 +16,12 @@ const NoteProvider = ({ children }) => {
     const [color, setColor] = useState("yellow");
     const [mediaModalVisible, setMediaModalVisible] = useState(false);
 
+    // Show content of the chosen note when editing
     useEffect(() => {
         const existingNoteObject = notes.find((note) => note.id === id);
         setTitle(existingNoteObject?.title || "");
         setContent(existingNoteObject?.content || "");
-        setImageUri(existingNoteObject?.imageUri || null);
+        setImageUri(existingNoteObject?.image || null);
         setColor(existingNoteObject?.color || "yellow");
      }, [id, notes]);
 

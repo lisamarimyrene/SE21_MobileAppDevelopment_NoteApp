@@ -1,14 +1,9 @@
 import { ScrollView, TextInput, Image, StyleSheet } from 'react-native'
 import { useContext } from 'react';
 import { NoteContext } from '../../context/useContext';
-import { useNotes } from '../../hooks/useNotes';
 
 export const InputSection = () => {
-    const { title, setTitle, content, setContent, imageUri, id } = useContext(NoteContext)
-    const { oneNote } = useNotes(id)
-
-    console.log("id input", id);
-    console.log("oneNote: ", oneNote);
+    const { title, setTitle, content, setContent, imageUri, setImageUri } = useContext(NoteContext)
 
     return (
         <ScrollView style={styles.inputSection}

@@ -1,10 +1,10 @@
+import React from "react";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { getAllNotes, updateNotesFunction } from "../utils/asyncStorage";
 import { generateNewId } from "../utils/generateNewId";
 import { router } from "expo-router";
 import { useFocusEffect } from '@react-navigation/native';
-import React from "react";
 
 // Bruker en hook når du har en state og en effect samtidig, der du lytter på hva brukeren gjør
 export const useNotes = (id) => {
@@ -33,7 +33,6 @@ export const useNotes = (id) => {
         let newNotesArray;
 
         const existingNoteObject = oldNotesArray.find((note) => note.id === id);
-        console.log("existingNote: ", existingNoteObject);
 
         // Set new note 
         const newNote = {
@@ -52,8 +51,6 @@ export const useNotes = (id) => {
             // else it creates a new array by spreading and adding the new note
             newNotesArray = [...oldNotesArray, newNote];
         }
-
-        console.log("newNotesArray: ", newNotesArray);
 
         try {
             await updateNotesFunction(newNotesArray);

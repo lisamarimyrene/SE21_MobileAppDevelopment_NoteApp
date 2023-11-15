@@ -1,12 +1,10 @@
 import { useContext } from "react";
 import * as FileSystem from "expo-file-system";
-import AsyncStorage, {ImagePicker} from "@react-native-async-storage/async-storage";
-import { NoteContext } from "../context/useContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from "expo-image-picker";
 
 // Take photo or upload from media library functionality
-export const mediaFunctionaliy = async (launchOption) => {
-
-    const { setImageUri, setImageOptionsModalVisible  } = useContext(NoteContext);
+export const mediaFunctionaliy = async (launchOption, setImageUri, setMediaModalVisible) => {
 
     const result = await launchOption({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -20,7 +18,7 @@ export const mediaFunctionaliy = async (launchOption) => {
         // returner heller resultatet
         setImageUri(result.assets[0].uri);
         // Hide modal
-        setImageOptionsModalVisible(false);
+        setMediaModalVisible(false);
 
         const filename = "image.jpg"; // Set a filename for the saved image
         // Set the file uri for the uploaded image
@@ -30,7 +28,7 @@ export const mediaFunctionaliy = async (launchOption) => {
         try {
             // Copy file and save
             await FileSystem.copyAsync({
-                from: result.uri, // Use result.uri as the source
+                from: result.assets[0].uri, // Use result.uri as the source
                 to: newFileUri,
             });
 
@@ -38,7 +36,7 @@ export const mediaFunctionaliy = async (launchOption) => {
             setImageUri(result.assets[0].uri);
 
             // Save image data using AsyncStorage
-            await AsyncStorage.setItem(newFileUri, result.uri);
+            await AsyncStorage.setItem(newFileUri, result.assets[0].uri);
 
             console.log("Image saved successfully to", newFileUri);
         } catch (error) {
@@ -47,5 +45,5 @@ export const mediaFunctionaliy = async (launchOption) => {
     }
 
     // Hide modal
-    setImageOptionsModalVisible(false);
+    setMediaModalVisible(false);
 };
