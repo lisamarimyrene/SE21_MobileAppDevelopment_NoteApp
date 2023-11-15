@@ -18,7 +18,7 @@ export const useNotes = () => {
 
     // Save note created or edited
     const handleSaveNote = async (id, title, content, color, imageUri) => {
-        let updatedNotesArray;
+        let newNotesArray;
         
         const existingNoteObject = notes.find((note) => note.id === id) ;
         console.log("existingNote: ", existingNoteObject);
@@ -34,13 +34,16 @@ export const useNotes = () => {
 
         // Check if note exist 
         if (existingNoteObject) {
-            updatedNotesArray = notes.map((note) => (note.id === id ? newNote : note))
+            // Replaces the note with the matching ID with the new data
+            newNotesArray = notes.map((note) => (note.id === id ? newNote : note))
         } else {
-            updatedNotesArray = [...notes, newNote];
+            // else it creates a new array by spreading and adding the new note
+            newNotesArray = [...notes, newNote];
         }
 
         try {
-            await updateNotesFunction(updatedNotesArray);
+            await updateNotesFunction(newNotesArray);
+            setNotes(newNotesArray);
             router.back();
         } catch (error) {
             console.error('Error saving note: ', error);
@@ -61,8 +64,10 @@ export const useNotes = () => {
                     text: 'Delete',
                     onPress: async () => {
                         try {
-                            const updatedNotesArray = notes.filter((note) => note.id !== id);
-                            await updateNotesFunction(updatedNotesArray);
+                            // removes chosen note from the notes array based on id and updates array
+                            const newNotesArray = notes.filter((note) => note.id !== id);
+                            await updateNotesFunction(newNotesArray);
+                            setNotes(newNotesArray);
                             router.back();
                         } catch (error) {
                             console.error('Error deleting note: ', error);
@@ -74,10 +79,6 @@ export const useNotes = () => {
             { cancelable: false }
         );
     }
-
-
-
-
 
     return { notes, handleSaveNote, handleDeleteNote };
 }

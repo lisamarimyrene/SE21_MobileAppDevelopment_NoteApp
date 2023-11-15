@@ -7,11 +7,11 @@ import "expo-router/entry";
 
 
 const Index = () => {
-    const { notes } = useNotes()
+
 
     return (
         <View style={styles.main}>
-            <Notes notes={notes} />
+            <Notes/>
             <NewNoteButton/>
         </View>
     )

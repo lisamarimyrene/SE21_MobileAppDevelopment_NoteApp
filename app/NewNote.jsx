@@ -13,20 +13,20 @@ import { getCameraPermission, getCameraRollPermission } from '../src/utils/getPe
 const NewNote = () => {
     const { id } = useLocalSearchParams();
     console.log(`PARAM ID: ${id}`);
+    const { handleSaveNote, handleDeleteNote, notes } = useNotes(id);
 
-    const { handleSaveNote, handleDeleteNote, oneNote } = useNotes(id);
-    // const { oneNote } = useOneNote(id);
-
-    // console.log('Id ', id);
-    // console.log('oneNote ', oneNote);
-
+    const existingNoteObject = notes.find((note) => note.id === id) ;
+    console.log('Existing Note Object:', existingNoteObject);
+    console.log('Existing title:', existingNoteObject.title);
+   
     // Set states, and populate fields if note exists (compares)
-    const [title, setTitle] = useState(oneNote?.title || '');
-    const [content, setContent] = useState(oneNote?.content || '');
-    const [color, setColor] = useState(oneNote?.color || 'blue');
+    const [title, setTitle] = useState(existingNoteObject?.title || '');
+    const [content, setContent] = useState(existingNoteObject?.content || '');
+    const [color, setColor] = useState(existingNoteObject?.color || 'blue');
+    const [imageUri, setImageUri] = useState(existingNoteObject?.imageUri || null);
 
+    // console.log("TITLE", title);
 
-    const [imageUri, setImageUri] = useState(null);
     const [isImageOptionsModalVisible, setImageOptionsModalVisible] = useState(false); // To show/hide modal
 
     const handleSubmit = () => {

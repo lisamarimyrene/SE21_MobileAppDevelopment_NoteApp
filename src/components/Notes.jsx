@@ -1,8 +1,10 @@
 import { ScrollView, View, Text, StyleSheet, FlatList } from "react-native"
 import { colors } from "../../themes/colors"
 import { PostIt } from "./PostIt"
+import { useNotes } from "../hooks/useNotes"
 
-export const Notes = ({ notes }) => {
+export const Notes = () => {
+    const { notes } = useNotes()
 
     if (!notes) {
         return (
@@ -17,19 +19,19 @@ export const Notes = ({ notes }) => {
         //     showsVerticalScrollIndicator={false}
         //     showsHorizontalScrollIndicator={false}
         // 
-        <View styles={styles.viewSection}>
+        <View style={styles.viewSection}>
             <FlatList
                 contentContainerStyle={styles.postitSection}
                 scrollEnabled={true}
                 data={notes}
-                renderItem={({item}) => {
+                renderItem={({ item }) => {
                     return <PostIt
                         id={item.id}
                         color={item.color}
                         title={item.title}
                         content={item.content}
-                    />}
-                }
+                    />
+                }}
             />
         </View>
         // </ScrollView>
