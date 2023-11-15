@@ -4,7 +4,6 @@ import { NoteContext } from '../../context/useContext';
 
 export const InputSection = () => {
 
-    // Get loggedIn accessToken, and player states.
     const { title, setTitle, content, setContent, imageUri  } = useContext(NoteContext)
 
     return (
