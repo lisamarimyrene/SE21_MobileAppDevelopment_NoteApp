@@ -20,10 +20,8 @@ export const NewNoteButton = () => {
 const styles = StyleSheet.create({
     buttonContainer: {
         width: "100%",
-        height: "20%",
+        height: "18%",
         justifyContent: "center",
         alignItems: "center",
-        borderWidth: 2,
-        borderColor: "#000",
     },
 });

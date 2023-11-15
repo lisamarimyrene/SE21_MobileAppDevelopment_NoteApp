@@ -45,7 +45,8 @@ export const SaveDeleteSection = () => {
                 ],
                 { cancelable: false }
             );
-            return;
+        } else {
+            router.back();
         }
     };
 
