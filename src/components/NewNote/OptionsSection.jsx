@@ -1,8 +1,8 @@
-import { View, TouchableOpacity, StyleSheet } from "react-native/types"
+import { View, TouchableOpacity, StyleSheet } from 'react-native'
 import { useContext } from "react";
 import Svg, { Path, Rect } from 'react-native-svg';
 import { NoteContext } from "../../context/useContext";
-import { colorOptions } from '../src/utils/colorFunctions';
+import { colorOptions } from '../../utils/colorFunctions';
 
 export const OptionsSection = () => {
 

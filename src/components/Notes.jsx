@@ -1,4 +1,4 @@
-import { ScrollView, View, Text, StyleSheet, FlatList } from "react-native"
+import { View, Text, StyleSheet, FlatList } from "react-native"
 import { colors } from "../../themes/colors"
 import { PostIt } from "./PostIt"
 import { useNotes } from "../hooks/useNotes"

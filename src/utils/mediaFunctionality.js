@@ -1,8 +1,12 @@
 import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NoteContext } from '../context/useContext';
 
 // Take photo or upload from media library functionality
-export const mediaFunctionaliy = async (launchOption, setImageUri, setImageOptionsModalVisible) => {
+export const mediaFunctionaliy = async (launchOption) => {
+
+    const { setImageUri, setImageOptionsModalVisible  } = useContext(NoteContext)
+
     const result = await launchOption({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing: true,
