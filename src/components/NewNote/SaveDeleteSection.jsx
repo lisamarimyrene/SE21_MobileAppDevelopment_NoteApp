@@ -95,5 +95,5 @@ const styles = StyleSheet.create({
     },
     saveBtn: {
         paddingLeft: 10
-    },
+    }
 })

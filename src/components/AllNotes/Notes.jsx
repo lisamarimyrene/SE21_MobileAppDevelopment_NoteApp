@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, FlatList } from "react-native"
-import { colors } from "../../themes/colors"
+import { colors } from "../../../themes/colors"
 import { PostIt } from "./PostIt"
-import { useNotes } from "../hooks/useNotes"
+import { useNotes } from "../../hooks/useNotes"
 
 export const Notes = () => {
     const { notes } = useNotes()
@@ -33,18 +33,12 @@ export const Notes = () => {
                     />
                 }}
             />
-        </View>
+            </View>
         // </ScrollView>
     )
 }
 
 const styles = StyleSheet.create({
-    // scrollContainer: {
-    //     height: "70%",
-    //     width: "90%",
-    //     borderWidth: 2,
-    //     borderColor: '#000'
-    // },
     placeholderTxtContainer: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -54,15 +48,15 @@ const styles = StyleSheet.create({
         fontFamily: 'Menlo'
     },
     viewSection: {
-        height: 200,
-        flexDirection: 'row',
-        flexWrap: 'wrap', // Allow the PostIt components to wrap
-        justifyContent: 'space-evenly',
+        height: "78%",
     },
     postitSection: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
         width: '100%',
+        paddingHorizontal: 30,
+        height: 'auto',
         paddingVertical: 20,
-        borderWidth: 2,
-        borderColor: '#000',
     },
 })

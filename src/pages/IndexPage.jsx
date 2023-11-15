@@ -1,6 +1,6 @@
 import { View, StyleSheet } from 'react-native'
 import { colors } from '../../themes/colors';
-import { Notes } from "../components/Notes"
+import { Notes } from "../components/AllNotes/Notes"
 import { NewNoteButton } from "../components/NewNote/NewNoteButton"
 
 export const IndexPage = () => {
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         paddingTop: 30,
         alignItems: 'center',
-        justifyContent: 'space-evenly',
+        justifyContent: 'center',
         height: ''
     }
 })

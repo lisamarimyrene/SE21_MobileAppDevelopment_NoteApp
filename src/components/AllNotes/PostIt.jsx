@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet } from 'react-native'
-import { colors } from '../../themes/colors'
-import { setColors, strokeColors } from '../utils/colorFunctions'
+import { colors } from '../../../themes/colors'
+import { setColors, strokeColors } from '../../utils/colorFunctions'
 import Svg, { Path } from 'react-native-svg';
 import { Link } from 'expo-router'
 
@@ -33,10 +33,10 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'space-between',
         width: '48%',
-        height: 150,
+        height: 155,
         aspectRatio: 1,
         padding: 16,
-        marginVertical: 7,
+        marginVertical: 10,
         color: colors.text,
         backgroundColor: 'white',
         borderRadius: 4,
