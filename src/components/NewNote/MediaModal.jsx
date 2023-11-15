@@ -6,7 +6,7 @@ import { mediaFunctionaliy } from "../../utils/mediaFunctionality";
 import * as ImagePicker from "expo-image-picker";
 
 export const MediaModal = () => {
-    const { mediaModalVisible, setMediaModalVisible  } = useContext(NoteContext);
+    const { mediaModalVisible, setMedaModalVisible  } = useContext(NoteContext);
 
     const launchCameraAsync = ImagePicker.launchCameraAsync;
     const launchImageLibraryAsync = ImagePicker.launchImageLibraryAsync;
@@ -19,7 +19,7 @@ export const MediaModal = () => {
                 animationType="slide"
                 onRequestClose={() => {
                     Alert.alert("Modal has been closed.");
-                    setImageOptionsModalVisible(!mediaModalVisible);
+                    setMedaModalVisible(!mediaModalVisible);
                 }}>
 
                 <View style={styles.centeredModal}>
@@ -34,7 +34,7 @@ export const MediaModal = () => {
                             </TouchableOpacity>
 
                         </View>
-                        <TouchableOpacity style={styles.modalCancelBtn} onPress={() => setImageOptionsModalVisible(false)}>
+                        <TouchableOpacity style={styles.modalCancelBtn} onPress={() => setMedaModalVisible(false)}>
                             <Text style={styles.modalOptionText}>Cancel</Text>
                         </TouchableOpacity>
                     </View>

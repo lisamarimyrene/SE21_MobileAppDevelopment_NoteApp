@@ -5,7 +5,7 @@ import { setColors, strokeColors } from "../../utils/colorFunctions";
 import Svg, { Path } from "react-native-svg";
 import { Link } from "expo-router";
 
-export const PostIt = ( color, title, content, id ) => {
+export const PostIt = ({ color, title, content, id }) => {
 
     // Find correct background color for edit button svg
     const backgroundColor = setColors[color] || colors.yellow.light;

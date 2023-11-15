@@ -19,7 +19,7 @@ export const Notes = () => {
         <View style={styles.viewSection}>
             <FlatList
                 contentContainerStyle={styles.postitSection}
-                numColumns={1} // Maybe change to 2
+                // numColumns={2} // Maybe change to 2
                 scrollEnabled={true}
                 data={notes}
                 renderItem={({ item }) => {
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     postitSection: {
         flexDirection: "row",
         justifyContent: "space-between",
-        // flexWrap: 'wrap'
+        flexWrap: 'wrap',
         width: "100%",
         paddingHorizontal: 30,
         height: "auto",
