@@ -15,13 +15,10 @@ export const Notes = () => {
     }
 
     return (
-        // <ScrollView style={styles.scrollContainer}
-        //     showsVerticalScrollIndicator={false}
-        //     showsHorizontalScrollIndicator={false}
-        // 
         <View style={styles.viewSection}>
             <FlatList
                 contentContainerStyle={styles.postitSection}
+                numColumns={1} // Maybe change to 2
                 scrollEnabled={true}
                 data={notes}
                 renderItem={({ item }) => {
@@ -34,7 +31,6 @@ export const Notes = () => {
                 }}
             />
             </View>
-        // </ScrollView>
     )
 }
 
@@ -53,7 +49,7 @@ const styles = StyleSheet.create({
     postitSection: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        flexWrap: 'wrap',
+        // flexWrap: 'wrap'
         width: '100%',
         paddingHorizontal: 30,
         height: 'auto',
