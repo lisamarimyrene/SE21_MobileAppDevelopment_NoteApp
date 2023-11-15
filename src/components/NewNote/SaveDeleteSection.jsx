@@ -1,53 +1,53 @@
-import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native'
-import { useContext } from 'react';
-import Svg, { Path } from 'react-native-svg';
-import { router } from 'expo-router';
+import { View, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import React, { useContext } from "react";
+import Svg, { Path } from "react-native-svg";
+import { router } from "expo-router";
 import { useNotes } from "../../hooks/useNotes";
-import { NoteContext } from '../../context/useContext';
+import { NoteContext } from "../../context/useContext";
 
 export const SaveDeleteSection = () => {
-    const { id, title, content, color, imageUri } = useContext(NoteContext)
+    const { id, title, content, color, imageUri } = useContext(NoteContext);
     const { handleSaveNote, handleDeleteNote } = useNotes(id);
 
 
     const handleSubmit = () => {
         if (!title && !content) {
             Alert.alert(
-                'Did you mean to save?',
-                'Please enter some input or delete the note.',
+                "Did you mean to save?",
+                "Please enter some input or delete the note.",
                 [
                     {
-                        text: 'OK',
+                        text: "OK",
                     },
                 ],
                 { cancelable: true }
             );
-            return
+            return;
         }
-        handleSaveNote(id, title, content, color, imageUri)
-    }
+        handleSaveNote(id, title, content, color, imageUri);
+    };
 
-    handleGoingBack = () => {
+    const handleGoingBack = () => {
         if (title || content) {
             Alert.alert(
-                'Are you sure?',
-                'The note will be lost if you continue.',
+                "Are you sure?",
+                "The note will be lost if you continue.",
                 [
                     {
-                        text: 'Cancel',
-                        style: 'cancel',
+                        text: "Cancel",
+                        style: "cancel",
                     },
                     {
-                        text: 'I am sure',
+                        text: "I am sure",
                         onPress: () => router.back(),
-                        style: 'destructive',
+                        style: "destructive",
                     },
                 ],
                 { cancelable: false }
             );
-            return
+            return;
         }
-    }
+    };
 
 
     return (
@@ -76,24 +76,24 @@ export const SaveDeleteSection = () => {
             </View>
 
         </View>
-    )
+    );
 
 
-}
+};
 
 const styles = StyleSheet.create({
     saveDeleteBackSection: {
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        width: "100%",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
         marginBottom: 30
     },
     saveDeleteSection: {
-        flexDirection: 'row',
-        alignItems: 'center'
+        flexDirection: "row",
+        alignItems: "center"
     },
     saveBtn: {
         paddingLeft: 10
     }
-})
+});

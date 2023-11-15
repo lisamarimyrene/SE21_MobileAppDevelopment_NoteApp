@@ -1,4 +1,5 @@
-import { Stack} from "expo-router" 
+import React from "react";
+import { Stack} from "expo-router";
 import "expo-router/entry";
 
 const StackLayout = () => {
@@ -9,7 +10,7 @@ const StackLayout = () => {
                 options={{presentation: "fullScreenModal", headerShown: false}}
             />
         </Stack>
-    )
-}
+    );
+};
 
 export default StackLayout;

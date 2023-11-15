@@ -1,10 +1,11 @@
-import { Text, View, StyleSheet } from 'react-native'
-import { colors } from '../../../themes/colors'
-import { setColors, strokeColors } from '../../utils/colorFunctions'
-import Svg, { Path } from 'react-native-svg';
-import { Link } from 'expo-router'
+import React from "react";
+import { Text, View, StyleSheet } from "react-native";
+import { colors } from "../../../themes/colors";
+import { setColors, strokeColors } from "../../utils/colorFunctions";
+import Svg, { Path } from "react-native-svg";
+import { Link } from "expo-router";
 
-export const PostIt = ({ color, title, content, id }) => {
+export const PostIt = ( color, title, content, id ) => {
 
     // Find correct background color for edit button svg
     const backgroundColor = setColors[color] || colors.yellow.light;
@@ -25,20 +26,20 @@ export const PostIt = ({ color, title, content, id }) => {
                 </Svg>
             </Link>
         </View>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     postitContainer: {
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        width: '48%',
+        flexDirection: "column",
+        justifyContent: "space-between",
+        width: "48%",
         height: 155,
         aspectRatio: 1,
         padding: 16,
         marginVertical: 10,
         color: colors.text,
-        backgroundColor: 'white',
+        backgroundColor: "white",
         borderRadius: 4,
         shadowColor: "#000",
         shadowOffset: {
@@ -50,22 +51,22 @@ const styles = StyleSheet.create({
         elevation: 4,
     },
     textContainer: {
-        height: '50%'
+        height: "50%"
 
     },
     headlineTxt: {
         fontSize: 14,
-        fontFamily: 'Menlo',
+        fontFamily: "Menlo",
         marginBottom: 12
     },
     contentTxt: {
         fontSize: 12,
-        fontFamily: 'Menlo',
-        minHeight: '48%'
+        fontFamily: "Menlo",
+        minHeight: "48%"
     },
     editSvg: {
-        flexDirection: 'row',
-        justifyContent: 'flex-end'
+        flexDirection: "row",
+        justifyContent: "flex-end"
     }
 
-})
+});

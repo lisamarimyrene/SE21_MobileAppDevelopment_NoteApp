@@ -1,3 +1,4 @@
+import React from "react";
 import { NewNotePage } from "../src/pages/NewNotePage";
 import { NoteProvider } from "../src/context/useContext";
 
@@ -6,7 +7,7 @@ const NewNote = () => {
         <NoteProvider>
             <NewNotePage />
         </NoteProvider>
-    )
-}
+    );
+};
 
 export default NewNote;

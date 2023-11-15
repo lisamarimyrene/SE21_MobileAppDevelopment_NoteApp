@@ -1,12 +1,12 @@
-import { View, TouchableOpacity, StyleSheet } from 'react-native'
-import { useContext } from "react";
-import Svg, { Path, Rect } from 'react-native-svg';
+import { View, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useContext } from "react";
+import Svg, { Path, Rect } from "react-native-svg";
 import { NoteContext } from "../../context/useContext";
-import { colorOptions } from '../../utils/colorFunctions';
+import { colorOptions } from "../../utils/colorFunctions";
 
 export const OptionsSection = () => {
 
-    const { color, setColor, setImageOptionsModalVisible } = useContext(NoteContext)
+    const { color, setColor, setImageOptionsModalVisible } = useContext(NoteContext);
 
     // Handle color change of the post-it note
     const handleColorChange = (color) => {
@@ -41,26 +41,26 @@ export const OptionsSection = () => {
                 </Svg>
             </TouchableOpacity>
         </View>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     optionsContainer: {
-        width: '100%',
-        justifyContent: 'space-between',
-        flexDirection: 'row',
-        alignItems: 'center',
+        width: "100%",
+        justifyContent: "space-between",
+        flexDirection: "row",
+        alignItems: "center",
         paddingVertical: 10
     },
     chooseColorSection: {
-        flexDirection: 'row',
-        width: '65%',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        flexDirection: "row",
+        width: "65%",
+        justifyContent: "space-between",
+        alignItems: "center",
         paddingVertical: 20,
     },
     takePhotoBtn: {
-        width: '15%',
+        width: "15%",
     }
-})
+});
 

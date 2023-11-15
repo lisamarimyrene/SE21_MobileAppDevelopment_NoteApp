@@ -1,17 +1,18 @@
-import { ScrollView, TextInput, Image, StyleSheet } from 'react-native'
-import { useContext, useEffect } from 'react';
-import { NoteContext } from '../../context/useContext';
-import { useNotes } from '../../hooks/useNotes';
+import React from "react";
+import { ScrollView, TextInput, Image, StyleSheet } from "react-native";
+import { useContext, useEffect } from "react";
+import { NoteContext } from "../../context/useContext";
+import { useNotes } from "../../hooks/useNotes";
 
 export const InputSection = () => {
-    const { title, content, imageUri, handleTitleChange, handleContentChange, setContent, setImageUri, setTitle  } = useContext(NoteContext)
-    const { oneNote } = useNotes()
+    const { title, content, imageUri, handleTitleChange, handleContentChange, setContent, setImageUri, setTitle  } = useContext(NoteContext);
+    const { oneNote } = useNotes();
 
     useEffect(() => {
         // Assuming oneNote holds the fetched note data
         if (oneNote) {
-            setTitle(oneNote.title || '');
-            setContent(oneNote.content || '');
+            setTitle(oneNote.title || "");
+            setContent(oneNote.content || "");
             setImageUri(oneNote.imageUri || null);
             // Update other context values as needed
         }
@@ -44,8 +45,8 @@ export const InputSection = () => {
             )}
         </ScrollView>
 
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     inputSection: {
@@ -55,16 +56,16 @@ const styles = StyleSheet.create({
         fontSize: 26,
         marginBottom: 30,
         height: 50,
-        fontFamily: 'Menlo',
+        fontFamily: "Menlo",
     },
     contentInput: {
         fontSize: 16,
-        height: 'auto',
-        fontFamily: 'Menlo',
+        height: "auto",
+        fontFamily: "Menlo",
     },
     imageInput: {
         height: 200,
-        width: '100%',
+        width: "100%",
         marginTop: 30
     },
-})
+});

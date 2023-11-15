@@ -1,17 +1,18 @@
-import { View, Text, StyleSheet, FlatList } from "react-native"
-import { colors } from "../../../themes/colors"
-import { PostIt } from "./PostIt"
-import { useNotes } from "../../hooks/useNotes"
+import React from "react";
+import { View, Text, StyleSheet, FlatList } from "react-native";
+import { colors } from "../../../themes/colors";
+import { PostIt } from "./PostIt";
+import { useNotes } from "../../hooks/useNotes";
 
 export const Notes = () => {
-    const { notes } = useNotes()
+    const { notes } = useNotes();
 
     if (!notes) {
         return (
             <View style={styles.placeholderTxtContainer}>
                 <Text style={styles.placeholderTxt}>Click the + button to create new note</Text>
             </View>
-        )
+        );
     }
 
     return (
@@ -27,32 +28,32 @@ export const Notes = () => {
                         color={item.color}
                         title={item.title}
                         content={item.content}
-                    />
+                    />;
                 }}
             />
-            </View>
-    )
-}
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
     placeholderTxtContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
     },
     placeholderTxt: {
         color: colors.text,
-        fontFamily: 'Menlo'
+        fontFamily: "Menlo"
     },
     viewSection: {
         height: "78%",
     },
     postitSection: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flexDirection: "row",
+        justifyContent: "space-between",
         // flexWrap: 'wrap'
-        width: '100%',
+        width: "100%",
         paddingHorizontal: 30,
-        height: 'auto',
+        height: "auto",
         paddingVertical: 20,
     },
-})
+});

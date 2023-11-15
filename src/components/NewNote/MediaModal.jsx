@@ -1,12 +1,12 @@
-import { View, Modal, TouchableOpacity, Text, Alert, StyleSheet } from 'react-native'
-import { useContext } from "react";
-import { colors } from '../../../themes/colors';
+import { View, Modal, TouchableOpacity, Text, Alert, StyleSheet } from "react-native";
+import React, { useContext } from "react";
+import { colors } from "../../../themes/colors";
 import { NoteContext } from "../../context/useContext";
-import { mediaFunctionaliy } from '../../utils/mediaFunctionality';
-import * as ImagePicker from 'expo-image-picker';
+import { mediaFunctionaliy } from "../../utils/mediaFunctionality";
+import * as ImagePicker from "expo-image-picker";
 
 export const MediaModal = () => {
-    const { isImageOptionsModalVisible, setImageOptionsModalVisible  } = useContext(NoteContext)
+    const { isImageOptionsModalVisible, setImageOptionsModalVisible  } = useContext(NoteContext);
 
     const launchCameraAsync = ImagePicker.launchCameraAsync;
     const launchImageLibraryAsync = ImagePicker.launchImageLibraryAsync;
@@ -18,8 +18,8 @@ export const MediaModal = () => {
                 transparent={true}
                 animationType="slide"
                 onRequestClose={() => {
-                    Alert.alert('Modal has been closed.');
-                    setImageOptionsModalVisible(!isImageOptionsModalVisible)
+                    Alert.alert("Modal has been closed.");
+                    setImageOptionsModalVisible(!isImageOptionsModalVisible);
                 }}>
 
                 <View style={styles.centeredModal}>
@@ -41,21 +41,21 @@ export const MediaModal = () => {
                 </View>
             </Modal>
         </View>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     centeredModal: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
     },
     imageOptionsModal: {
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
         backgroundColor: colors.background,
-        height: '20%',
-        width: '80%',
+        height: "20%",
+        width: "80%",
         paddingBottom: 10,
         borderRadius: 20,
         shadowColor: "#000",
@@ -68,22 +68,22 @@ const styles = StyleSheet.create({
         elevation: 4,
     },
     modalPictureOptionsContainer: {
-        flexDirection: 'row',
-        width: '80%',
-        justifyContent: 'space-between'
+        flexDirection: "row",
+        width: "80%",
+        justifyContent: "space-between"
 
     },
     modalOptionText: {
-        textAlign: 'center',
+        textAlign: "center",
     },
     modalChooseBtn: {
-        backgroundColor: 'white',
+        backgroundColor: "white",
         padding: 10,
         width: 110,
         borderRadius: 5,
         marginTop: 20,
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: "center",
+        alignItems: "center"
     },
     modalCancelBtn: {
         backgroundColor: colors.blue.medium,
@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginTop: 20
     }
-})
+});

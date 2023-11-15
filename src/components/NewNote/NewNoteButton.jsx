@@ -1,10 +1,11 @@
-import { TouchableOpacity, StyleSheet } from "react-native"
-import Svg, { Path } from 'react-native-svg';
-import { Link } from 'expo-router'
+import React from "react";
+import { TouchableOpacity, StyleSheet } from "react-native";
+import Svg, { Path } from "react-native-svg";
+import { Link } from "expo-router";
 
 export const NewNoteButton = () => {
     return (
-        <Link href={'/NewNote?noteId='} asChild>
+        <Link href={"/NewNote?noteId="} asChild>
             <TouchableOpacity
                 style={styles.buttonContainer}
             >
@@ -13,16 +14,16 @@ export const NewNoteButton = () => {
                 </Svg>
             </TouchableOpacity>
         </Link>
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     buttonContainer: {
-        width: '100%',
-        height: '20%',
-        justifyContent: 'center',
-        alignItems: 'center',
+        width: "100%",
+        height: "20%",
+        justifyContent: "center",
+        alignItems: "center",
         borderWidth: 2,
-        borderColor: '#000',
+        borderColor: "#000",
     },
-})
+});

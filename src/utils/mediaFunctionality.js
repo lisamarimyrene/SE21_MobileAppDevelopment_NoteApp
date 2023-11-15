@@ -1,11 +1,12 @@
-import * as FileSystem from 'expo-file-system';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NoteContext } from '../context/useContext';
+import { useContext } from "react";
+import * as FileSystem from "expo-file-system";
+import AsyncStorage, {ImagePicker} from "@react-native-async-storage/async-storage";
+import { NoteContext } from "../context/useContext";
 
 // Take photo or upload from media library functionality
 export const mediaFunctionaliy = async (launchOption) => {
 
-    const { setImageUri, setImageOptionsModalVisible  } = useContext(NoteContext)
+    const { setImageUri, setImageOptionsModalVisible  } = useContext(NoteContext);
 
     const result = await launchOption({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -19,9 +20,9 @@ export const mediaFunctionaliy = async (launchOption) => {
         // returner heller resultatet
         setImageUri(result.assets[0].uri);
         // Hide modal
-        setImageOptionsModalVisible(false)
+        setImageOptionsModalVisible(false);
 
-        const filename = 'image.jpg'; // Set a filename for the saved image
+        const filename = "image.jpg"; // Set a filename for the saved image
         // Set the file uri for the uploaded image
         const newFileUri = `${FileSystem.documentDirectory}${filename}`;
 
@@ -39,12 +40,12 @@ export const mediaFunctionaliy = async (launchOption) => {
             // Save image data using AsyncStorage
             await AsyncStorage.setItem(newFileUri, result.uri);
 
-            console.log('Image saved successfully to', newFileUri);
+            console.log("Image saved successfully to", newFileUri);
         } catch (error) {
-            console.error('Error saving image:', error);
+            console.error("Error saving image:", error);
         }
     }
 
     // Hide modal
-    setImageOptionsModalVisible(false)
-}
+    setImageOptionsModalVisible(false);
+};
