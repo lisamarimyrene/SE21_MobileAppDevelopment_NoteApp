@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import { useNotes } from "../hooks/useNotes";
 import { useLocalSearchParams } from "expo-router";
 
@@ -10,13 +10,22 @@ const NoteProvider = ({ children }) => {
 
     //? Need to figureout the states
     const { id } = useLocalSearchParams();
-    const { oneNote } = useNotes(id);
+    console.log("ID", id);
+    const { notes } = useNotes(id);
 
-    const [title, setTitle] = useState(oneNote?.title || "");
-    const [content, setContent] = useState(oneNote?.content || "");
-    const [imageUri, setImageUri] = useState(oneNote?.imageUri || null);
-    const [color, setColor] = useState(oneNote?.color || "yellow");
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+    const [imageUri, setImageUri] = useState(null);
+    const [color, setColor] = useState("yellow");
     const [mediaModalVisible, setMediaModalVisible] = useState(false);
+
+    useEffect(() => {
+        const existingNoteObject = notes.find((note) => note.id === id);
+        setTitle(existingNoteObject?.title || "");
+        setContent(existingNoteObject?.content || "");
+        setImageUri(existingNoteObject?.imageUri || null);
+        setColor(existingNoteObject?.color || "yellow");
+     }, [id, notes]);
 
     // Wrap the context around all children (App)
     return (

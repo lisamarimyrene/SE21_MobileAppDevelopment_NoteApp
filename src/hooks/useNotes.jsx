@@ -3,21 +3,23 @@ import { Alert } from "react-native";
 import { getAllNotes, updateNotesFunction } from "../utils/asyncStorage";
 import { generateNewId } from "../utils/generateNewId";
 import { router } from "expo-router";
+import { useFocusEffect } from '@react-navigation/native';
+import React from "react";
 
 // Bruker en hook når du har en state og en effect samtidig, der du lytter på hva brukeren gjør
 export const useNotes = (id) => {
     const [notes, setNotes] = useState([]);
     const [oneNote, setOneNote] = useState({});
 
-    // Refresh notes data that are listening on the refreshTrigger state
-    useEffect(() => {
-        const loadNotes = async () => {
-            const loadedNotes = await getAllNotes();
-            setNotes(loadedNotes);
-        };
-        loadNotes();
-    }, [notes]);
-
+    useFocusEffect(
+        React.useCallback(() => {
+            const loadNotes = async () => {
+                const loadedNotes = await getAllNotes();
+                setNotes(loadedNotes);
+            };
+            loadNotes();
+        }, [])
+    );
 
     useEffect(() => {
         const existingNoteObject = notes.find((note) => note.id === id);
@@ -27,9 +29,10 @@ export const useNotes = (id) => {
 
     // Save note created or edited
     const handleSaveNote = async (id, title, content, color, imageUri) => {
+        let oldNotesArray = notes;
         let newNotesArray;
-        
-        const existingNoteObject = notes.find((note) => note.id === id) ;
+
+        const existingNoteObject = oldNotesArray.find((note) => note.id === id);
         console.log("existingNote: ", existingNoteObject);
 
         // Set new note 
@@ -44,11 +47,13 @@ export const useNotes = (id) => {
         // Check if note exist 
         if (existingNoteObject) {
             // Replaces the note with the matching ID with the new data
-            newNotesArray = notes.map((note) => (note.id === id ? newNote : note));
+            newNotesArray = oldNotesArray.map((note) => (note.id === id ? newNote : note));
         } else {
             // else it creates a new array by spreading and adding the new note
-            newNotesArray = [...notes, newNote];
+            newNotesArray = [...oldNotesArray, newNote];
         }
+
+        console.log("newNotesArray: ", newNotesArray);
 
         try {
             await updateNotesFunction(newNotesArray);

@@ -5,7 +5,7 @@ export const updateNotesFunction = async (newNoteArray) => {
     // Store the updated notes in AsyncStorage
     try {
         await AsyncStorage.setItem("notes", JSON.stringify(newNoteArray));
-        console.log("Sucess saving!", JSON.stringify(newNoteArray));
+        // console.log("Sucess saving!", JSON.stringify(newNoteArray));
     } catch (error) {
         console.error("Error saving notes to AsyncStorage: ", error);
     }

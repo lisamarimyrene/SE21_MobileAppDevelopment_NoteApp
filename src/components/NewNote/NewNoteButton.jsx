@@ -5,7 +5,7 @@ import { Link } from "expo-router";
 
 export const NewNoteButton = () => {
     return (
-        <Link href={"/NewNote?noteId="} asChild>
+        <Link href={"/NewNote"} asChild>
             <TouchableOpacity
                 style={styles.buttonContainer}
             >
