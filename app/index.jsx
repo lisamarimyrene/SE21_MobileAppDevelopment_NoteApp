@@ -1,14 +1,12 @@
 import { View, StyleSheet } from 'react-native'
 import { colors } from '../themes/colors'
 import { Notes } from '../src/components/Notes';
-import { NewNoteButton } from '../src/components/NewNoteButton';
+import { NewNoteButton } from '../src/components/NewNote/NewNoteButton';
 import { useNotes } from '../src/hooks/useNotes';
 import "expo-router/entry";
 
 
 const Index = () => {
-
-
     return (
         <View style={styles.main}>
             <Notes/>

@@ -26,6 +26,7 @@ const NewNote = () => {
     const [content, setContent] = useState(existingNoteObject?.content || '');
     const [color, setColor] = useState(existingNoteObject?.color || 'blue');
     const [imageUri, setImageUri] = useState(existingNoteObject?.imageUri || null);
+
     const [isImageOptionsModalVisible, setImageOptionsModalVisible] = useState(false); // To show/hide modal
 
     const handleSubmit = () => {
