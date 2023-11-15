@@ -5,6 +5,8 @@ import Svg, { Path, Rect } from 'react-native-svg';
 import React, { useState, useEffect } from 'react';
 import { colors } from '../themes/colors';
 import { useLocalSearchParams } from 'expo-router';
+import { mediaFunctionaliy } from '../src/utils/mediaFunctionality';
+import * as ImagePicker from 'expo-image-picker';
 // import { useOneNote } from '../src/hooks/useOneNote';
 import { useNotes } from '../src/hooks/useNotes';
 import { getCameraPermission, getCameraRollPermission } from '../src/utils/getPermissions';
@@ -17,16 +19,13 @@ const NewNote = () => {
 
     const existingNoteObject = notes.find((note) => note.id === id) ;
     console.log('Existing Note Object:', existingNoteObject);
-    console.log('Existing title:', existingNoteObject.title);
+    // console.log('Existing title:', existingNoteObject.title);
    
     // Set states, and populate fields if note exists (compares)
     const [title, setTitle] = useState(existingNoteObject?.title || '');
     const [content, setContent] = useState(existingNoteObject?.content || '');
     const [color, setColor] = useState(existingNoteObject?.color || 'blue');
     const [imageUri, setImageUri] = useState(existingNoteObject?.imageUri || null);
-
-    // console.log("TITLE", title);
-
     const [isImageOptionsModalVisible, setImageOptionsModalVisible] = useState(false); // To show/hide modal
 
     const handleSubmit = () => {
@@ -149,10 +148,10 @@ const NewNote = () => {
                         <View style={styles.centeredModal}>
                             <View style={styles.imageOptionsModal}>
                                 <View style={styles.modalPictureOptionsContainer}>
-                                    <TouchableOpacity style={styles.modalChooseBtn} onPress={() => takePhoto(setImageUri, setImageOptionsModalVisible)}>
+                                    <TouchableOpacity style={styles.modalChooseBtn} onPress={() => mediaFunctionaliy(ImagePicker.launchCameraAsync, setImageUri, setImageOptionsModalVisible)}>
                                         <Text style={styles.modalOptionText}>Take a Photo</Text>
                                     </TouchableOpacity>
-                                    <TouchableOpacity style={styles.modalChooseBtn} onPress={() => chooseFromCameraRoll(setImageUri, setImageOptionsModalVisible)}>
+                                    <TouchableOpacity style={styles.modalChooseBtn} onPress={() => mediaFunctionaliy(ImagePicker.launchImageLibraryAsync, setImageUri, setImageOptionsModalVisible)}>
                                         <Text style={styles.modalOptionText}>Choose from Camera Roll</Text>
                                     </TouchableOpacity>
 
