@@ -1,17 +1,12 @@
 import { View, StyleSheet } from "react-native";
 import React, { useEffect } from "react";
-
-// Utils & Hooks
 import { getCameraPermission, getCameraRollPermission } from "../utils/getPermissions";
-
-// Components
 import { SaveDeleteSection } from "../components/NewNote/SaveDeleteSection";
 import { InputSection } from "../components/NewNote/InputSection";
 import { OptionsSection } from "../components/NewNote/OptionsSection";
 import { MediaModal } from "../components/NewNote/MediaModal";
 
 export const NewNotePage = () => {
-
     // Update persmission
     useEffect(() => {
         getCameraRollPermission();
@@ -19,12 +14,12 @@ export const NewNotePage = () => {
     }, []);
 
     return (
-            <View style={styles.newNoteContainer}>
-                <SaveDeleteSection/>
-                <InputSection/>
-                <OptionsSection />
-                <MediaModal />
-            </View>
+        <View style={styles.newNoteContainer}>
+            <SaveDeleteSection />
+            <InputSection />
+            <OptionsSection />
+            <MediaModal />
+        </View>
     );
 };
 

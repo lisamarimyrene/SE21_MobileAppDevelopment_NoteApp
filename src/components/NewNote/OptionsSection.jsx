@@ -5,7 +5,6 @@ import { NoteContext } from "../../context/useContext";
 import { colorOptions } from "../../utils/colorFunctions";
 
 export const OptionsSection = () => {
-
     const { color, setColor, setMediaModalVisible } = useContext(NoteContext);
 
     // Handle color change of the post-it note

@@ -6,7 +6,7 @@ import { generateNewId } from "../utils/generateNewId";
 import { router } from "expo-router";
 import { useFocusEffect } from '@react-navigation/native';
 
-// Bruker en hook når du har en state og en effect samtidig, der du lytter på hva brukeren gjør
+// use Hook to listen on stated and render useEffect accordingly
 export const useNotes = (id) => {
     const [notes, setNotes] = useState([]);
     const [oneNote, setOneNote] = useState({});
@@ -45,10 +45,10 @@ export const useNotes = (id) => {
 
         // Check if note exist 
         if (existingNoteObject) {
-            // Replaces the note with the matching ID with the new data
+            // Replaces the note with the matching id with the new data
             newNotesArray = oldNotesArray.map((note) => (note.id === id ? newNote : note));
         } else {
-            // else it creates a new array by spreading and adding the new note
+            // Else, it creates a new array by spreading and adding the new note
             newNotesArray = [...oldNotesArray, newNote];
         }
 
@@ -75,7 +75,7 @@ export const useNotes = (id) => {
                     text: "Delete",
                     onPress: async () => {
                         try {
-                            // removes chosen note from the notes array based on id and updates array
+                            // Removes chosen note from the notes array based on id and updates array
                             const newNotesArray = notes.filter((note) => note.id !== id);
                             await updateNotesFunction(newNotesArray);
                             setNotes(newNotesArray);

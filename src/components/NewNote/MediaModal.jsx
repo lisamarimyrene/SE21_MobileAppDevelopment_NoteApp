@@ -32,13 +32,13 @@ export const MediaModal = () => {
                             <TouchableOpacity style={styles.modalChooseBtn} onPress={() => mediaFunctionaliy(launchImageLibraryAsync, setImageUri, setMediaModalVisible)}>
                                 <Text style={styles.modalOptionText}>Choose from Camera Roll</Text>
                             </TouchableOpacity>
-
                         </View>
                         <TouchableOpacity style={styles.modalCancelBtn} onPress={() => setMediaModalVisible(false)}>
                             <Text style={styles.modalOptionText}>Cancel</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
+
             </Modal>
         </View>
     );
@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         width: "80%",
         justifyContent: "space-between"
-
     },
     modalOptionText: {
         textAlign: "center",

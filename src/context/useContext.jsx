@@ -5,7 +5,7 @@ import { useLocalSearchParams } from "expo-router";
 // Initialize context
 const NoteContext = createContext(null);
 
-// Bruker en provider når du trenger tilgang til samme statesene globalt
+// Provider to access and update the states globally
 const NoteProvider = ({ children }) => {
     const { id } = useLocalSearchParams();
     const { notes } = useNotes(id);

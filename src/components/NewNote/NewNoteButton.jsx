@@ -23,5 +23,5 @@ const styles = StyleSheet.create({
         height: "18%",
         justifyContent: "center",
         alignItems: "center",
-    },
+    }
 });

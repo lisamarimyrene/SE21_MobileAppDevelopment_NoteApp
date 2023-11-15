@@ -2,7 +2,6 @@ import { generateNewId } from '../utils/generateNewId';
 
 // Test for generateNewId function
 test('test if it generates a new id', () => {
-    // Call the function to generate a new ID
     const newId = generateNewId();
 
     // Expect the newId to be defined and a string
