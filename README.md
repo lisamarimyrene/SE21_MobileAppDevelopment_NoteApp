@@ -88,17 +88,17 @@ In assets you will find decorative items, such as svg's.
 
 ### src
 In src will you find the main functionality of the application such as:
-* components
+* **components**
     - All the components are stored in this folder.
-* context
+* **context**
     - The useContext API, to access and update the states globally.
-* hooks
+* **hooks**
     - the useNotes hook that listens on states and render useEffect accordingly.
-* pages
+* **pages**
     - Page components that gathers all the children compoents.
-* tests
+* **tests**
     - Test folder for creating tests. 
-* utils
+* **utils**
     -  Contains helper functions for better reusability and seperation.
 
 ### themes
