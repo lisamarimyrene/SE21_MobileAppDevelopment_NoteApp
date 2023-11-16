@@ -104,8 +104,6 @@ In src will you find the main functionality of the application such as:
 ### themes
 Stores the colors of the application, to use in styling.
 
-## 
-
 ## Contributing Guidelines
 When commiting to git, please follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/), a specification for adding human and machine readable meaning to commit messages. 
 
